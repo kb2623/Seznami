@@ -17,13 +17,13 @@ public class SeznamiUV {
 		this.seznam = null;
 	}
 
-	@SuppressWarnings("resource")
 	public String processInput(String input) {
 		if(input == null) {
 			return "Error: Bad arguments";
 		}
 		Scanner scan = new Scanner(input);
 		if(!scan.hasNext()) {
+			scan.close();
 			return "Error: No arguments";
 		}
 		String res = "OK", token;
@@ -164,6 +164,7 @@ public class SeznamiUV {
 				res = "Error: bad operation";
 				break;
 		}
+		scan.close();
 		return res;
 	}
 
