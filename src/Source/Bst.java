@@ -1,7 +1,11 @@
 package Source;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import Nodes.BstNode;
 
 public class Bst<T extends Comparable<T>> implements Seznam<T> {
@@ -167,5 +171,27 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 			}
 		}
 		return list;		
+	}
+
+	@Override
+	public void print() {
+		this.print(this.rootNode, 0);
+	}
+	
+	private void print(BstNode<T> node, int numTabs) {
+		
+	}
+
+	@Override
+	public void save(OutputStream outputStream) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void restore(InputStream inputStream) throws IOException,
+			ClassNotFoundException {
+		// TODO Auto-generated method stub
+		
 	}
 }

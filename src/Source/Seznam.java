@@ -1,5 +1,8 @@
 package Source;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 public interface Seznam<T> {
@@ -21,4 +24,10 @@ public interface Seznam<T> {
 	public T remove(T e);
 	// Vrne elemente podatkovne strukture kot seznam
 	public List<T> asList();
+	// Izpise strukturo
+	public void print();
+	// Shrani strukturo
+	public void save(OutputStream outputStream) throws IOException;
+	// Vrne strukturo v zadnje shranjeno stanje
+	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException;
 }

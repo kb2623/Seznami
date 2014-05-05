@@ -1,5 +1,8 @@
 package Source;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -179,5 +182,24 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 			}
 			return newList;
 		}
+	}
+
+	@Override
+	public void print() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save(OutputStream outputStream) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void restore(InputStream inputStream) throws IOException,
+			ClassNotFoundException {
+		// TODO Auto-generated method stub
+		
 	}
 }

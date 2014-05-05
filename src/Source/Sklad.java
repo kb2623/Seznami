@@ -1,7 +1,11 @@
 package Source;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import Nodes.StackNode;
 
 public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T> {
@@ -85,5 +89,24 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 			newList.add(tmp.data);
 		}
 		return newList;
+	}
+
+	@Override
+	public void print() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save(OutputStream outputStream) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void restore(InputStream inputStream) throws IOException,
+			ClassNotFoundException {
+		// TODO Auto-generated method stub
+		
 	}
 }
