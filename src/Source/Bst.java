@@ -2,6 +2,8 @@ package Source;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 import Nodes.BstNode;
 
 public class Bst<T extends Comparable<T>> implements Seznam<T> {
+	
 	private BstNode<T> rootNode;
 	private T minNodeValue;
 
@@ -179,19 +182,47 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 	}
 	
 	private void print(BstNode<T> node, int numTabs) {
-		
+		if(node != null) {
+			this.print(node.right, numTabs+1);
+			for(int i = 0; i < numTabs; i++) {
+				System.out.print('\t');
+			}
+			System.out.println(node.value);
+			this.print(node.left, numTabs+1);
+		}
 	}
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
-		// TODO Auto-generated method stub
-		
+		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		out.writeInt(this.size());
+		this.save(this.rootNode, out);
+	}
+	
+	private void save(BstNode<T> node, ObjectOutputStream out) throws IOException {
+		if(node != null) {
+			this.save(node.left, out);
+			out.writeObject(node.value);
+			this.save(node.right, out);
+		}
 	}
 
 	@Override
-	public void restore(InputStream inputStream) throws IOException,
-			ClassNotFoundException {
-		// TODO Auto-generated method stub
-		
+	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
+		ObjectInputStream in = new ObjectInputStream(inputStream);
+		int count = in.readInt();
+		this.rootNode = this.restore(in, count);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private BstNode<T> restore(ObjectInputStream in, int count) throws IOException, ClassNotFoundException {
+		if(count != 0) {
+			BstNode<T> nodeLeft = this.restore(in, count/2);
+			BstNode<T> node = new BstNode<T>((T) in.readObject());
+			node.left = nodeLeft;
+			node.right = this.restore(in, (count-1)/2);
+			return node;
+		}
+		return null;
 	}
 }

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@SuppressWarnings("unchecked")
 public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
+	
 	private Object[] heap;
 	private int end;
 	private static final byte ADD_SIZE = 2;
@@ -37,6 +37,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		this.heap = newHeap;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void bubbleUp() {
 		for(int pIndex = this.end - 1; pIndex >= 0; pIndex = (pIndex % 2 == 1)?(pIndex - 1) / 2 : (pIndex - 2) / 2) {
 			T pValue = (T) this.heap[pIndex];
@@ -60,6 +61,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		this.heap[source] = tmp;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T removeFirst() {
 		if(this.isEmpty()) {
@@ -73,6 +75,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private void bubbleDown(int start) {
 		int pIndex = start, cIndex = pIndex * 2 + 1; 
 		while(cIndex < this.end) {
@@ -89,6 +92,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T getFirst() {
 		if (this.isEmpty()) {
@@ -125,6 +129,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean exists(T e, int index) {
 		if(index >= this.end) {
 			return false;
@@ -141,6 +146,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T remove(T e) {
 		int index = this.search(e, 0);
@@ -154,6 +160,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private int search(T e, int index) {
 		if(index >= this.end) {
 			return -1;
@@ -171,6 +178,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> asList() {
 		if(this.isEmpty()) {
@@ -197,8 +205,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 	}
 
 	@Override
-	public void restore(InputStream inputStream) throws IOException,
-			ClassNotFoundException {
+	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 		
 	}

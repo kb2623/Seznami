@@ -1,15 +1,19 @@
 package Source;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.HashMap;
 
 public class SeznamiUV {
+	
 	private final HashMap<String, Seznam<String>> seznami;
 	private Seznam<String> seznam;
 
 	public SeznamiUV() {
-		this.seznami = new HashMap<>();
+		this.seznami = new HashMap<String, Seznam<String>>();
 		this.seznami.put("pv", new PrioritetnaVrsta<String>());
 		this.seznami.put("sk", new Sklad<String>());
 		this.seznami.put("bst", new Bst<String>());
@@ -158,6 +162,41 @@ public class SeznamiUV {
 					while(!this.seznam.isEmpty()) {
 						this.seznam.removeFirst();
 					}
+				}
+				break;
+			case "print":
+				if(this.seznam == null) {
+					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
+				} else {
+					this.seznam.print();
+				}
+				break;
+			case "save":
+				if(this.seznam == null) {
+					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
+				} else if(null != (token = this.getNextString(scan))) {
+					try {
+						this.seznam.save(new FileOutputStream(token));
+					} catch(IOException e) {
+						res = "Error: IO error "+e.getMessage();
+					}
+				} else {
+					res = "Error: please specify a file name";
+				}
+				break;
+			case "restore":
+				if(this.seznam == null) {
+					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
+				} else if(null != (token = this.getNextString(scan))) {
+					try {
+						this.seznam.restore(new FileInputStream(token));
+					} catch (IOException e) {
+						res = "Error: IO error "+e.getMessage();
+					} catch(ClassNotFoundException e) {
+						res = "Error: Unknown format";
+					}
+				} else {
+					res = "Error: please specify a file name";
 				}
 				break;
 			default:

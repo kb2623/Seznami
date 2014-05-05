@@ -9,6 +9,7 @@ import java.util.List;
 import Nodes.BinHeapaNode;
 
 public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
+	
 	private BinHeapaNode<T> topNode;
 
 	@Override

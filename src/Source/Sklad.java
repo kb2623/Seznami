@@ -93,20 +93,16 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 
 	@Override
 	public void print() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
-	public void restore(InputStream inputStream) throws IOException,
-			ClassNotFoundException {
-		// TODO Auto-generated method stub
-		
+	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
+		// TODO Auto-generated method stub		
 	}
 }
