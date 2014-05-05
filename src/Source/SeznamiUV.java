@@ -84,7 +84,7 @@ public class SeznamiUV {
 					res = "Error: bk queue is empty";
 				}
 				break;
-			case "size":
+			case "count":
 				if(this.seznam == null) {
 					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
 				} else {
