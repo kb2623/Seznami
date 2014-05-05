@@ -2,6 +2,8 @@ package Source;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,16 +95,28 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 
 	@Override
 	public void print() {
-		// TODO Auto-generated method stub		
+		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
+			System.out.print(tmp.data+"\t");
+		}
+		System.out.println();
 	}
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
-		// TODO Auto-generated method stub		
+		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		out.writeInt(this.size());
+		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
+			out.writeObject(tmp.data);
+		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub		
+		ObjectInputStream in = new ObjectInputStream(inputStream);
+		int count = in.readInt();
+		for(int i = 0; i < count; i++) {
+			this.add((T) in.readObject());
+		}
 	}
 }
