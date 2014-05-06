@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import Nodes.StackNode;
 
 public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T> {
@@ -95,18 +94,27 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 
 	@Override
 	public void print() {
-		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
-			System.out.print(tmp.data+"\t");
+		if(!this.isEmpty()) {
+			for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
+				System.out.print(tmp.data);
+				if(tmp.prev != null) {
+					System.out.print('\t');
+				}
+			}
+			System.out.println();
 		}
-		System.out.println();
 	}
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
 		out.writeInt(this.size());
+		Stack<T> stack = new Stack<T>();
 		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
-			out.writeObject(tmp.data);
+			stack.push(tmp.data);
+		}
+		while(!stack.isEmpty()) {
+			out.writeObject(stack.pop());
 		}
 	}
 

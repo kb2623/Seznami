@@ -426,4 +426,13 @@ public class SeznamiUVTest {
 		assertEquals("OK", uv.processInput("add \"asdf\""));
 		assertEquals("OK", uv.processInput("add \"Hello my friend\""));
 	}
+	
+	@Test
+	public void testPrint_Sklad() {
+		assertEquals("OK", uv.processInput("use sk"));
+		assertEquals("OK", uv.processInput("add 1"));
+		assertEquals("OK", uv.processInput("add 1"));
+		assertEquals("OK", uv.processInput("add 1"));
+		assertEquals("OK", uv.processInput("print"));
+	}
 }
