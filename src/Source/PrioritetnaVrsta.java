@@ -2,6 +2,8 @@ package Source;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -194,19 +196,36 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 
 	@Override
 	public void print() {
-		// TODO Auto-generated method stub
-		
+		this.print(0, 0);
+	}
+	
+	private void print(int ele, int numTabs) {
+		if(ele < this.size()) {
+			this.print(ele*2+1, numTabs+1);
+			for(int i = 0; i < numTabs; i++) {
+				System.out.print('\t');
+			}
+			System.out.println(this.heap[ele]);
+			this.print(ele*2+2, numTabs+1);
+		}
 	}
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
-		// TODO Auto-generated method stub
-		
+		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		out.writeInt(this.size());
+		for(int i = 0; i < this.size(); i++) {
+			out.writeObject(this.heap[i]);
+		}
 	}
 
 	@Override
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub
-		
+		ObjectInputStream in = new ObjectInputStream(inputStream);
+		int size = in.readInt();
+		this.heap = new Object[size];
+		for(int i = 0; i < size; i++) {
+			this.heap[i] = in.readObject();
+		}
 	}
 }
