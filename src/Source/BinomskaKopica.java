@@ -2,6 +2,8 @@ package Source;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -288,11 +290,17 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
-		// FIXME
+		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		out.writeByte(3);
 	}
 
 	@Override
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub		
+		ObjectInputStream in = new ObjectInputStream(inputStream);
+		if(in.readByte() == 3) {
+			// TODO : Imamo shranjeno strukturo, ki je BinomskaKopica
+		} else {
+			// TODO : Imamo strukturo, ki ni BinomskaKopica
+		}
 	}
 }
