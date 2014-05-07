@@ -288,7 +288,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
-		// TODO Auto-generated method stub
+		// FIXME
 	}
 
 	@Override
