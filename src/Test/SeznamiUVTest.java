@@ -62,7 +62,7 @@ public class SeznamiUVTest {
 		reset(); testExists();
 		reset(); testRemove();
 	}
-
+	
 	@Test
 	public void testUseBST() {
 		assertEquals("OK", uv.processInput("use bst"));
@@ -249,22 +249,22 @@ public class SeznamiUVTest {
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("removefirst")); break;
 			default: assertEquals("Error: bk queue is empty", uv.processInput("removefirst")); break;
 		}
-		assertEquals("0", uv.processInput("size"));
+		assertEquals("0", uv.processInput("count"));
 	}
 
 	public void testCountOnEmpty() {
-		assertEquals("0", uv.processInput("size"));
+		assertEquals("0", uv.processInput("count"));
 	}
 
 	public void testCountOne() {
 		assertEquals("OK", uv.processInput("add Test"));
-		assertEquals("1", uv.processInput("size"));
+		assertEquals("1", uv.processInput("count"));
 	}
 
 	public void testCountTwo() {
 		assertEquals("OK", uv.processInput("add Test1"));
 		assertEquals("OK", uv.processInput("add Test2"));
-		assertEquals("2", uv.processInput("size"));
+		assertEquals("2", uv.processInput("count"));
 	}
 
 	public void testDepthOnEmpty() {
@@ -367,8 +367,8 @@ public class SeznamiUVTest {
 	}
 
 	@Test
-	public void testProcesInput_Size_SeznamNull() {
-		assertEquals("Error: please specify a data structure type (pv, sk, bst, bk)", uv.processInput("size"));
+	public void testProcesInput_Count_SeznamNull() {
+		assertEquals("Error: please specify a data structure type (pv, sk, bst, bk)", uv.processInput("count"));
 	}
 
 	@Test
@@ -394,6 +394,27 @@ public class SeznamiUVTest {
 	@Test
 	public void testProcesInput_Reset_SeznamNull() {
 		assertEquals("Error: please specify a data structure type (pv, sk, bst, bk)", uv.processInput("reset"));
+	}
+	
+	@Test
+	public void testProcesInput_Print_SeznamNull() {
+		assertEquals("Error: please specify a data structure type (pv, sk, bst, bk)", uv.processInput("print"));
+	}
+
+	@Test
+	public void testProcesInput_Save_SeznamNull() {
+		assertEquals("Error: please specify a data structure type (pv, sk, bst, bk)", uv.processInput("save"));
+		assertEquals("Error: please specify a data structure type (pv, sk, bst, bk)", uv.processInput("save test.bin"));
+		assertEquals("OK", uv.processInput("use sk"));
+		assertEquals("Error: please specify a file name", uv.processInput("save"));
+	}
+	
+	@Test
+	public void testProcesInput_Restore_SeznamNull() {
+		assertEquals("Error: please specify a data structure type (pv, sk, bst, bk)", uv.processInput("restore"));
+		assertEquals("Error: please specify a data structure type (pv, sk, bst, bk)", uv.processInput("restore test.bin"));
+		assertEquals("OK", uv.processInput("use sk"));
+		assertEquals("Error: please specify a file name", uv.processInput("restore"));
 	}
 
 	@Test
@@ -427,12 +448,78 @@ public class SeznamiUVTest {
 		assertEquals("OK", uv.processInput("add \"Hello my friend\""));
 	}
 	
-	@Test
-	public void testPrint_Sklad() {
-		assertEquals("OK", uv.processInput("use sk"));
-		assertEquals("OK", uv.processInput("add 1"));
-		assertEquals("OK", uv.processInput("add 1"));
-		assertEquals("OK", uv.processInput("add 1"));
+	public void testPrint(boolean add) {
+		if(add) testAddTestSequence();
 		assertEquals("OK", uv.processInput("print"));
+		if(add) assertEquals("5", uv.processInput("count"));
+		else 	assertEquals("0", uv.processInput("count"));
+	}
+	
+	public void testSaveRestore(boolean add) {
+		if(add) testAddTestSequence();
+		assertEquals("Error: please specify a file name", uv.processInput("save"));
+		assertEquals("OK", uv.processInput("save test.bin"));
+		assertEquals("OK", uv.processInput("reset"));
+		assertEquals("0", uv.processInput("count"));
+		assertEquals("Error: please specify a file name", uv.processInput("restore"));
+		if(add) {
+			assertEquals("OK", uv.processInput("restore test.bin"));
+			assertEquals("5", uv.processInput("count"));
+		} else {
+			assertEquals("Error: IO error test.test (No such file or directory)", uv.processInput("restore test.test"));
+			assertEquals("Error: IO error null", uv.processInput("restore test.bin"));
+			assertEquals("0", uv.processInput("count"));
+		}
+	}
+	
+	public void testSaveRestore_Diff(String struct) {
+		if(struct.equals("sk")) {
+			assertEquals("OK", uv.processInput("use pv"));
+			testAddTestSequence();
+			assertEquals("OK", uv.processInput("save test.bin"));
+		} else {
+			assertEquals("OK", uv.processInput("use sk"));
+			testAddTestSequence();
+			assertEquals("OK", uv.processInput("save test.bin"));
+		}
+		assertEquals("OK", uv.processInput("use "+struct));
+		assertEquals("OK", uv.processInput("restore test.bin"));
+		assertEquals("OK", uv.processInput("print"));
+	}
+	
+	@Test
+	public void testSK_PrintSaveRestore() {
+		assertEquals("OK", uv.processInput("use sk"));
+		reset(); testPrint(false);
+		reset(); testPrint(true);
+		reset(); testSaveRestore(true);
+		reset(); testSaveRestore(false);
+		reset(); testSaveRestore_Diff("sk");
+	}
+	
+	@Test
+	public void testPV_PrintSaveRestore() {
+		assertEquals("OK", uv.processInput("use pv"));
+		reset(); testPrint(false);
+		reset(); testPrint(true);
+		reset(); testSaveRestore(true);
+		reset(); testSaveRestore(false);
+		reset(); testSaveRestore_Diff("pv");
+	}
+	
+	@Test
+	public void testBst_PrintSaveRestore() {
+		assertEquals("OK", uv.processInput("use bst"));
+		reset(); testPrint(false);
+		reset(); testPrint(true);
+		reset(); testSaveRestore(true);
+		reset(); testSaveRestore(false);
+		reset(); testSaveRestore_Diff("bst");
+	}
+	
+	@Test
+	public void testSaveForError() {
+		assertEquals("OK", uv.processInput("use sk"));
+		assertEquals("Error: IO error /hello (Permission denied)", uv.processInput("save /hello/"));
 	}
 }

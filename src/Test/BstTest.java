@@ -3,7 +3,6 @@ package Test;
 import Source.Bst;
 import java.util.List;
 import org.junit.*;
-
 import static org.junit.Assert.*;
 
 public class BstTest {

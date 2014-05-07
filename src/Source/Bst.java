@@ -195,6 +195,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		out.writeByte(2);
 		out.writeInt(this.size());
 		this.save(this.rootNode, out);
 	}
@@ -207,22 +208,31 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(inputStream);
-		int count = in.readInt();
-		this.rootNode = this.restore(in, count);
+		if(in.readByte() != 2) {
+			int count = in.readInt();
+			this.rootNode = new BstNode<T>((T) in.readObject());
+			for(int i = 1; i < count; i++) {
+				this.add((T) in.readObject());
+			}
+		} else {
+			int count = in.readInt();
+			this.rootNode = this.restore(in, count);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	private BstNode<T> restore(ObjectInputStream in, int count) throws IOException, ClassNotFoundException {
-		if(count != 0) {
-			BstNode<T> nodeLeft = this.restore(in, count/2);
-			BstNode<T> node = new BstNode<T>((T) in.readObject());
-			node.left = nodeLeft;
-			node.right = this.restore(in, (count-1)/2);
-			return node;
+		if(count == 0) {
+			return null;
 		}
-		return null;
+		BstNode<T> nodeLeft = this.restore(in, count/2);
+		BstNode<T> node = new BstNode<T>((T) in.readObject());
+		node.left = nodeLeft;
+		node.right = this.restore(in, (count-1)/2);
+		return node;
 	}
 }

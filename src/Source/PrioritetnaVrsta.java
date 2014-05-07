@@ -213,19 +213,30 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		out.writeByte(1);
 		out.writeInt(this.size());
 		for(int i = 0; i < this.size(); i++) {
 			out.writeObject(this.heap[i]);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(inputStream);
-		int size = in.readInt();
-		this.heap = new Object[size];
-		for(int i = 0; i < size; i++) {
-			this.heap[i] = in.readObject();
+		if(in.readByte() != 1) {
+			int size = in.readInt();
+			this.heap = new Object[size];
+			for(int i = 0; i < size; i++) {
+				this.add((T) in.readObject());
+			}
+		} else {
+			int size = in.readInt();
+			this.end = size;
+			this.heap = new Object[size];
+			for(int i = 0; i < size; i++) {
+				this.heap[i] = in.readObject();
+			}
 		}
 	}
 }

@@ -264,12 +264,31 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 
 	@Override
 	public void print() {
-		// TODO Auto-generated method stub		
+		int tabs = 0;
+		BinHeapaNode<T> node = this.topNode;
+		while(node != null) {
+			if(node.child == null) {
+				System.out.println(node.data);
+				if(tabs == 0) {
+					node = node.sibling;
+				} else {
+					tabs--;
+					node = node.parent.sibling;
+					for(int i = 0; i < tabs; i++) {
+						System.out.print('\t');
+					}
+				}
+			} else {
+				System.out.print(node.data+"\t");
+				tabs++;
+				node = node.child;
+			}
+		}
 	}
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	@Override

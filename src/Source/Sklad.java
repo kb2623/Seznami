@@ -94,20 +94,22 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 
 	@Override
 	public void print() {
-		if(!this.isEmpty()) {
-			for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
-				System.out.print(tmp.data);
-				if(tmp.prev != null) {
-					System.out.print('\t');
-				}
-			}
-			System.out.println();
+		if(this.isEmpty()) {
+			return;
 		}
+		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
+			System.out.print(tmp.data);
+			if(tmp.prev != null) {
+				System.out.print('\t');
+			}
+		}
+		System.out.println();
 	}
 
 	@Override
 	public void save(OutputStream outputStream) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
+		out.writeByte(0);
 		out.writeInt(this.size());
 		Stack<T> stack = new Stack<T>();
 		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
@@ -122,6 +124,7 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 	@Override
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(inputStream);
+		in.readByte();
 		int count = in.readInt();
 		for(int i = 0; i < count; i++) {
 			this.add((T) in.readObject());
