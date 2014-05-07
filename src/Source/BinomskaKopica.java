@@ -268,20 +268,20 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 		BinHeapaNode<T> node = this.topNode;
 		while(node != null) {
 			if(node.child == null) {
-				System.out.println(node.data);
-				if(tabs == 0) {
+				if(node.parent == null) {
+					System.out.println(node.data);
 					node = node.sibling;
 				} else {
-					tabs--;
-					node = node.parent.sibling;
-					for(int i = 0; i < tabs; i++) {
-						System.out.print('\t');
+					for(int i = 1; i < tabs; i++) {
+						System.out.print("\t");
 					}
+					System.out.println(node.parent.data+"\t"+node.data);
+					node = node.parent.sibling;
+					tabs--;
 				}
 			} else {
-				System.out.print(node.data+"\t");
-				tabs++;
 				node = node.child;
+				tabs++;
 			}
 		}
 	}
