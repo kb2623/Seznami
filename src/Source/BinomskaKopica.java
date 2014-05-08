@@ -63,7 +63,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 			}
 			if(prevMax != null) {
 				prevMax.sibling = currMax.sibling;
-			} else { 
+			} else {
 				this.topNode = this.topNode.sibling;
 			}
 			this.removeNode(currMax);
@@ -139,11 +139,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 
 	@Override
 	public boolean exists(T e) {
-		if(this.isEmpty()) {
-			return false;
-		} else {
-			return (this.findNode(e) != null);
-		}
+        return (this.findNode(e) != null);
 	}
 
 	@Override
@@ -296,18 +292,35 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 	public void save(OutputStream outputStream) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
 		out.writeByte(3);
-        // TODO : Shrani strukturo v izhodni podatkovni "out"
+        out.writeInt(this.size());
+        Stack<BinHeapaNode<T>> stack = new Stack<>();
+        BinHeapaNode<T> curr = this.topNode;
+        while(curr != null || !stack.isEmpty()) {
+            if(curr == null) {
+                curr = stack.pop();
+                out.writeObject(curr.data);
+                curr = curr.sibling;
+            } else if(curr.child != null) {
+                stack.push(curr);
+                curr = curr.child;
+            } else {
+                out.writeObject(curr.data);
+                curr = curr.sibling;
+            }
+        }
 	}
 
 	@Override
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(inputStream);
 		if(in.readByte() == 3) {
-			// TODO : Imamo shranjeno strukturo, ki je BinomskaKopica
-		} else {
-            int size = in.readInt();
             this.topNode = null;
-            for(int i = 0; i < size; i++) {
+            for(int size = in.readInt(); size > 0; size--) {
+                this.add((T) in.readObject());
+            }
+		} else {
+            this.topNode = null;
+            for(int size = in.readInt(); size > 0; size--) {
                 this.add((T) in.readObject());
             }
 		}
