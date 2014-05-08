@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
-	
+
 	private Object[] heap;
 	private int end;
 	private static final byte ADD_SIZE = 2;

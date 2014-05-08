@@ -11,7 +11,7 @@ import java.util.List;
 import Nodes.BstNode;
 
 public class Bst<T extends Comparable<T>> implements Seznam<T> {
-	
+
 	private BstNode<T> rootNode;
 	private T minNodeValue;
 
@@ -221,7 +221,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 			this.rootNode = this.restore(in, count);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private BstNode<T> restore(ObjectInputStream in, int count) throws IOException, ClassNotFoundException {
 		if(count == 0) {

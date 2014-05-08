@@ -4,9 +4,9 @@ import java.util.NoSuchElementException;
 import Nodes.StackNode;
 
 public class Stack<T> {
-	
+
 	private StackNode<T> top;
-	
+
 	public Stack() {
 		this.top = null;
 	}
