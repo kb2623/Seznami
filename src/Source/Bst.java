@@ -161,7 +161,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 		if(this.isEmpty()) {
 			return null;
 		}
-		List<T> list = new ArrayList<>(this.size());
+		List<T> list = new ArrayList<T>(this.size());
 		Stack<BstNode<T>> stack = new Stack<BstNode<T>>();
 		BstNode<T> curr = this.rootNode;
 		while(curr != null || !stack.isEmpty()) {

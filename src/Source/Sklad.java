@@ -34,7 +34,7 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 
 	@Override
 	public void add(T e) {
-		super.push(e);		
+		super.push(e);
 	}
 
 	@Override

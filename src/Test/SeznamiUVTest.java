@@ -443,83 +443,8 @@ public class SeznamiUVTest {
 	
 	@Test
 	public void testGetNextString_AddtionalStringTest() {
-		assertEquals("OK", uv.processInput("use sk\"Kako si kaj\""));
-		assertEquals("OK", uv.processInput("add \"asdf\""));
-		assertEquals("OK", uv.processInput("add \"Hello my friend\""));
-	}
-	
-	public void testPrint(boolean add) {
-		if(add) testAddTestSequence();
-		assertEquals("OK", uv.processInput("print"));
-		if(add) assertEquals("5", uv.processInput("count"));
-		else 	assertEquals("0", uv.processInput("count"));
-	}
-	
-	public void testSaveRestore(boolean add) {
-		if(add) testAddTestSequence();
-		assertEquals("Error: please specify a file name", uv.processInput("save"));
-		assertEquals("OK", uv.processInput("save test.bin"));
-		assertEquals("OK", uv.processInput("reset"));
-		assertEquals("0", uv.processInput("count"));
-		assertEquals("Error: please specify a file name", uv.processInput("restore"));
-		if(add) {
-			assertEquals("OK", uv.processInput("restore test.bin"));
-			assertEquals("5", uv.processInput("count"));
-		} else {
-			assertEquals("Error: IO error test.test (No such file or directory)", uv.processInput("restore test.test"));
-			assertEquals("Error: IO error null", uv.processInput("restore test.bin"));
-			assertEquals("0", uv.processInput("count"));
-		}
-	}
-	
-	public void testSaveRestore_Diff(String struct) {
-		if(struct.equals("sk")) {
-			assertEquals("OK", uv.processInput("use pv"));
-			testAddTestSequence();
-			assertEquals("OK", uv.processInput("save test.bin"));
-		} else {
-			assertEquals("OK", uv.processInput("use sk"));
-			testAddTestSequence();
-			assertEquals("OK", uv.processInput("save test.bin"));
-		}
-		assertEquals("OK", uv.processInput("use "+struct));
-		assertEquals("OK", uv.processInput("restore test.bin"));
-		assertEquals("OK", uv.processInput("print"));
-	}
-	
-	@Test
-	public void testSK_PrintSaveRestore() {
-		assertEquals("OK", uv.processInput("use sk"));
-		reset(); testPrint(false);
-		reset(); testPrint(true);
-		reset(); testSaveRestore(true);
-		reset(); testSaveRestore(false);
-		reset(); testSaveRestore_Diff("sk");
-	}
-	
-	@Test
-	public void testPV_PrintSaveRestore() {
-		assertEquals("OK", uv.processInput("use pv"));
-		reset(); testPrint(false);
-		reset(); testPrint(true);
-		reset(); testSaveRestore(true);
-		reset(); testSaveRestore(false);
-		reset(); testSaveRestore_Diff("pv");
-	}
-	
-	@Test
-	public void testBst_PrintSaveRestore() {
-		assertEquals("OK", uv.processInput("use bst"));
-		reset(); testPrint(false);
-		reset(); testPrint(true);
-		reset(); testSaveRestore(true);
-		reset(); testSaveRestore(false);
-		reset(); testSaveRestore_Diff("bst");
-	}
-	
-	@Test
-	public void testSaveForError() {
-		assertEquals("OK", uv.processInput("use sk"));
-		assertEquals("Error: IO error /hello (Permission denied)", uv.processInput("save /hello/"));
-	}
+        assertEquals("OK", uv.processInput("use sk\"Kako si kaj\""));
+        assertEquals("OK", uv.processInput("add \"asdf\""));
+        assertEquals("OK", uv.processInput("add \"Hello my friend\""));
+    }
 }

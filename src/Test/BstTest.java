@@ -12,8 +12,8 @@ public class BstTest {
 
 	@Before
 	public void setUp() {
-		this.bst = new Bst<>();
-		this.instance = new Bst<>();
+		this.bst = new Bst<String>();
+		this.instance = new Bst<Integer>();
 	}
 	
 	@Test

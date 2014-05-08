@@ -14,6 +14,10 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 	
 	private BinHeapaNode<T> topNode;
 
+    public BinomskaKopica() {
+        this.topNode = null;
+    }
+
 	@Override
 	public void add(T e) {
 		if(this.isEmpty()) {
@@ -292,6 +296,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 	public void save(OutputStream outputStream) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
 		out.writeByte(3);
+        // TODO : Shrani strukturo v izhodni podatkovni "out"
 	}
 
 	@Override
@@ -300,7 +305,11 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 		if(in.readByte() == 3) {
 			// TODO : Imamo shranjeno strukturo, ki je BinomskaKopica
 		} else {
-			// TODO : Imamo strukturo, ki ni BinomskaKopica
+            int size = in.readInt();
+            this.topNode = null;
+            for(int i = 0; i < size; i++) {
+                this.add((T) in.readObject());
+            }
 		}
 	}
 }

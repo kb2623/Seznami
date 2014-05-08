@@ -186,7 +186,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		if(this.isEmpty()) {
 			return null;
 		} else {
-			List<T> newList = new ArrayList<>(this.size());
+			List<T> newList = new ArrayList<T>(this.size());
 			for(int i = 0; i < this.size(); i++) {
 				newList.add((T) this.heap[i]);
 			}
