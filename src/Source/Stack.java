@@ -16,7 +16,7 @@ public class Stack<T> {
 	}
 
 	public void push(T e) {
-		this.top = new StackNode<T>(e, this.top);
+		this.top = new StackNode<>(e, this.top);
 	}
 
 	public T pop() {

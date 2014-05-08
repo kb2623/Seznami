@@ -12,7 +12,7 @@ public class BinomskaKopicaTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.instance = new BinomskaKopica<Integer>();
+		this.instance = new BinomskaKopica<>();
 	}
 
 	@Test(timeout = 250)

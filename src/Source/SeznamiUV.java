@@ -13,7 +13,7 @@ public class SeznamiUV {
 	private Seznam<String> seznam;
 
 	public SeznamiUV() {
-		this.seznami = new HashMap<String, Seznam<String>>();
+		this.seznami = new HashMap<>();
 		this.seznami.put("pv", new PrioritetnaVrsta<String>());
 		this.seznami.put("sk", new Sklad<String>());
 		this.seznami.put("bst", new Bst<String>());
@@ -30,8 +30,8 @@ public class SeznamiUV {
 			scan.close();
 			return "Error: No arguments";
 		}
-		String res = "OK", token;
-		switch((token = scan.next())) {
+		String res = "OK", token = scan.next();
+		switch(token) {
 			case "use":
 				if(null != (token = this.getNextString(scan))) {
 					if(null == (this.seznam = this.seznami.get(token))) {

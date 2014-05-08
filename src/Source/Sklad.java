@@ -71,7 +71,7 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 		} else {
 			for(StackNode<T> tmp = super.getTopNode(); tmp.prev != null; tmp = tmp.prev) {
 				if(tmp.prev.data.equals(e)) {
-					T dataTmp = (T) tmp.prev.data;
+					T dataTmp = tmp.prev.data;
 					tmp.prev = tmp.prev.prev;
 					return dataTmp;
 				}
@@ -85,7 +85,7 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 		if(this.isEmpty()) {
 			return null;
 		}
-		List<T> newList = new ArrayList<T>(this.size());
+		List<T> newList = new ArrayList<>(this.size());
 		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
 			newList.add(tmp.data);
 		}
@@ -111,7 +111,7 @@ public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
 		out.writeByte(0);
 		out.writeInt(this.size());
-		Stack<T> stack = new Stack<T>();
+		Stack<T> stack = new Stack<>();
 		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
 			stack.push(tmp.data);
 		}

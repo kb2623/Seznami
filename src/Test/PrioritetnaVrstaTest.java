@@ -15,8 +15,8 @@ public class PrioritetnaVrstaTest {
 
 	@Before
 	public void setUp() {
-		this.pv = new PrioritetnaVrsta<String>(10);
-		this.instance = new PrioritetnaVrsta<Integer>();
+		this.pv = new PrioritetnaVrsta<>(10);
+		this.instance = new PrioritetnaVrsta<>();
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class PrioritetnaVrstaTest {
 
 	@Test
 	public void testAdd_Overflow() {
-		pv = new PrioritetnaVrsta<String>(2);
+		pv = new PrioritetnaVrsta<>(2);
 		pv.add("Test1");
 		pv.add("Test2");
 		pv.add("Test3");

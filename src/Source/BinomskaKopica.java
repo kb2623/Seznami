@@ -21,9 +21,9 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 	@Override
 	public void add(T e) {
 		if(this.isEmpty()) {
-			this.topNode = new BinHeapaNode<T>(e, null, null, null, 0);
+			this.topNode = new BinHeapaNode<>(e, null, null, null, 0);
 		} else {
-			this.topNode = new BinHeapaNode<T>(e, null, this.topNode, null, 0);
+			this.topNode = new BinHeapaNode<>(e, null, this.topNode, null, 0);
 			while(this.topNode.sibling != null && this.topNode.depth == this.topNode.sibling.depth) {
 				this.topNode = this.merge(this.topNode, this.topNode.sibling);
 			}
@@ -175,7 +175,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 
 	private BinHeapaNode<T> findNode(T e) {
 		BinHeapaNode<T> curr = this.topNode;
-		Stack<BinHeapaNode<T>> stack = new Stack<BinHeapaNode<T>>();
+		Stack<BinHeapaNode<T>> stack = new Stack<>();
 		while(curr != null || !stack.isEmpty()) {
 			if(curr == null) {
 				curr = stack.pop().sibling;
@@ -195,7 +195,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 		if(null != node.child) {
 			node.sibling = null;
 			BinHeapaNode<T> curr, prev;
-			Stack<BinHeapaNode<T>> stack = new Stack<BinHeapaNode<T>>();
+			Stack<BinHeapaNode<T>> stack = new Stack<>();
 			curr = node.child;
 			while(curr != null) {
 				curr.parent = null;
@@ -249,8 +249,8 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 		if(this.isEmpty()) {
 			return null;
 		}
-		List<T> list = new ArrayList<T>(this.size());
-		Stack<BinHeapaNode<T>> stack = new Stack<BinHeapaNode<T>>();
+		List<T> list = new ArrayList<>(this.size());
+		Stack<BinHeapaNode<T>> stack = new Stack<>();
 		BinHeapaNode<T> curr = this.topNode;
 		while(curr != null || !stack.isEmpty()) {
 			if(curr == null) {

@@ -12,7 +12,7 @@ public class StackTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.instance = new Stack<String>();
+		this.instance = new Stack<>();
 	}
 
 	@Test

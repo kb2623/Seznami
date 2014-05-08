@@ -46,7 +46,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 
 	private BstNode<T> insertLeaf(T e, BstNode<T> node) {
 		if (node == null) {
-			node = new BstNode<T>(e);
+			node = new BstNode<>(e);
 		} else if (e.compareTo(node.value) < 0) {
 			node.left = this.insertLeaf(e, node.left);
 		} else if (e.compareTo(node.value) > 0) {
@@ -98,8 +98,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 		if (node == null) {
 			return 0;
 		}
-		int i = 1 + this.countNodes(node.left) + this.countNodes(node.right);
-		return i;
+		return (1 + this.countNodes(node.left) + this.countNodes(node.right));
 	}
 
 	@Override
@@ -147,8 +146,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 
 	@Override
 	public int size() {
-		int i = this.countNodes(this.rootNode);
-		return i;
+		return this.countNodes(this.rootNode);
 	}
 
 	@Override
@@ -161,8 +159,8 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 		if(this.isEmpty()) {
 			return null;
 		}
-		List<T> list = new ArrayList<T>(this.size());
-		Stack<BstNode<T>> stack = new Stack<BstNode<T>>();
+		List<T> list = new ArrayList<>(this.size());
+		Stack<BstNode<T>> stack = new Stack<>();
 		BstNode<T> curr = this.rootNode;
 		while(curr != null || !stack.isEmpty()) {
 			if(curr != null) {
@@ -214,7 +212,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 		ObjectInputStream in = new ObjectInputStream(inputStream);
 		if(in.readByte() != 2) {
 			int count = in.readInt();
-			this.rootNode = new BstNode<T>((T) in.readObject());
+			this.rootNode = new BstNode<>((T) in.readObject());
 			for(int i = 1; i < count; i++) {
 				this.add((T) in.readObject());
 			}
@@ -230,7 +228,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 			return null;
 		}
 		BstNode<T> nodeLeft = this.restore(in, count/2);
-		BstNode<T> node = new BstNode<T>((T) in.readObject());
+		BstNode<T> node = new BstNode<>((T) in.readObject());
 		node.left = nodeLeft;
 		node.right = this.restore(in, (count-1)/2);
 		return node;

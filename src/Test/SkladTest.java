@@ -15,7 +15,7 @@ public class SkladTest {
 
 	@Before
 	public void setUp() {
-		this.instance = new Sklad<String>();
+		this.instance = new Sklad<>();
 	}
 
 	@Test
