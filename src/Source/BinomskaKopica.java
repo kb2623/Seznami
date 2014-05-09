@@ -47,6 +47,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 		}
 	}
 
+	@SuppressWarnings("all")
 	@Override
 	public T removeFirst(){
 		if(this.isEmpty()) {
@@ -310,6 +311,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(inputStream);
