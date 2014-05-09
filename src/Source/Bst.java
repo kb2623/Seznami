@@ -214,7 +214,11 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 			int count = in.readInt();
 			this.rootNode = new BstNode<>((T) in.readObject());
 			for(int i = 1; i < count; i++) {
-				this.add((T) in.readObject());
+				try {
+					this.add((T) in.readObject());
+				} catch (IllegalArgumentException e) {
+					System.out.println("Error: element exists");
+				}
 			}
 		} else {
 			int count = in.readInt();
