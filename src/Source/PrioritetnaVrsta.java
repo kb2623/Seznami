@@ -124,14 +124,10 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 
 	@Override
 	public boolean exists(T e) {
-		if(this.isEmpty()) {
-			return false;
-		} else {
-			return this.exists(e, 0);
-		}
+		return this.exists(e, 0);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("all")
 	private boolean exists(T e, int index) {
 		if(index >= this.end) {
 			return false;
@@ -140,11 +136,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		} else if(((T) this.heap[index]).compareTo(e) == 0) {
 			return true;
 		} else {
-			if(this.exists(e, index * 2 + 1)) {
-				return true;
-			} else {
-				return this.exists(e, index * 2 + 2);
-			}
+			return this.exists(e, index * 2 + 1) || this.exists(e, index * 2 + 2);
 		}
 	}
 
@@ -227,6 +219,7 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		if(in.readByte() != 1) {
 			int size = in.readInt();
 			this.heap = new Object[size];
+			this.end = 0;
 			for(int i = 0; i < size; i++) {
 				this.add((T) in.readObject());
 			}
