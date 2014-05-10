@@ -1,6 +1,6 @@
 import pexpect
 
-def test_bst_save_restore():
+def test_pv_save_restore():
     baza = pexpect.pexpect()
 
     try:
@@ -143,6 +143,6 @@ def test_save_other_restore_pv():
 
 
 if __name__ == "__main__":
-    test_bst_save_restore()
+    test_pv_save_restore()
     test_save_other_restore_pv()
 

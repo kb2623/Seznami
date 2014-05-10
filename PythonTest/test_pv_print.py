@@ -1,7 +1,7 @@
 import pexpect
 
 
-def test_bst_print():
+def test_pv_print():
     baza = pexpect.pexpect()
 
     try:
@@ -43,5 +43,5 @@ def test_bst_print():
 
 
 if __name__ == "__main__":
-    test_bst_print()
+    test_pv_print()
 
