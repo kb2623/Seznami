@@ -1,4 +1,6 @@
 Seznami
 =======
 
-Testiranje in kakovost
+##Prevajanje
+
+javac -d bin src/Nodes/*.java src/Source/*.java src/PodatkovnaBaza.java

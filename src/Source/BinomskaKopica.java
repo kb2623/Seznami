@@ -295,21 +295,27 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 		out.writeByte(3);
 		out.writeInt(this.size());
 		Stack<BinHeapaNode<T>> stack = new Stack<>();
-		BinHeapaNode<T> curr = this.topNode;
-		while(curr != null || !stack.isEmpty()) {
-			if(curr == null) {
-				curr = stack.pop();
-				out.writeObject(curr.data);
-				curr = curr.sibling;
-			} else if(curr.child != null) {
-				stack.push(curr);
-				curr = curr.child;
-			} else {
-				out.writeObject(curr.data);
-				curr = curr.sibling;
-			}
+		BinHeapaNode<T> node = this.topNode;
+		while(node != null) {
+			stack.push(node);
+			node = node.sibling;
+		}
+		while(!stack.isEmpty()) {
+			this.save(out, stack.pop());
 		}
 	}
+
+	private void save(ObjectOutputStream out, BinHeapaNode<T> node) throws IOException {
+		if(node.child != null) {
+			this.save(out, node.child);
+			out.writeObject(node.data);
+			if(node.sibling != null) {
+				this.save(out, node.sibling);
+			}
+		} else {
+			out.writeObject(node.data);
+		}
+	} 
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -49,8 +49,8 @@ def test_bk_save_restore():
         baza.expect("Enter command: ")
 
         baza.send("print")
-        baza.expect("2")
-        baza.expect("3\t1")
+        baza.expect("3")
+        baza.expect("2\t1")
         baza.expect("OK")
         baza.expect("Enter command: ")
 
