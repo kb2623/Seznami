@@ -124,10 +124,10 @@ def test_save_other_restore_sk():
         baza.send("count")
         baza.expect("3")
 
-        print "PASSED\ttest_save_other_restore_bst"
+        print "PASSED\ttest_save_other_restore_sk"
 
     except:
-        print "FAILED\ttest_save_other_restore_bst"
+        print "FAILED\ttest_save_other_restore_sk"
 
     finally:
         baza.kill()

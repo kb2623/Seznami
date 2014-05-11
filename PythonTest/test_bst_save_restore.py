@@ -119,14 +119,14 @@ def test_save_other_restore_bst():
         baza.expect("Enter command: ")
 
         baza.send("restore test.bin")
-        baza.except("Error: element exists")
+        baza.expect("Error: element exists")
         baza.expect("OK")
         baza.expect("Enter command: ")
 
         baza.send("print")
         baza.expect("3")
-        baza.expect("\t\t2")
-        baza.expect("\t1")
+        baza.expect("\t2")
+        baza.expect("\t\t1")
         baza.expect("OK")
         baza.expect("Enter command: ")
 

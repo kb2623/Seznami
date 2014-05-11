@@ -1,6 +1,5 @@
 import pexpect
 
-
 def test_pv_print():
     baza = pexpect.pexpect()
 

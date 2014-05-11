@@ -1,6 +1,5 @@
 import pexpect
 
-
 def test_bst_print():
     baza = pexpect.pexpect()
 

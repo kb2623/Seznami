@@ -1,6 +1,5 @@
 import pexpect
 
-
 def test_exit_no_use():
     baza = pexpect.pexpect()
 
