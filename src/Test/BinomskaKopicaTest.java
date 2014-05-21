@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import Source.BinomskaKopica;
 import java.util.List;
+import Comparators.CompareInteger;
 
 public class BinomskaKopicaTest {
 
@@ -12,7 +13,7 @@ public class BinomskaKopicaTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.instance = new BinomskaKopica<>();
+		this.instance = new BinomskaKopica<>(new CompareInteger());
 	}
 
 	@Test(timeout = 250)

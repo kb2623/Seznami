@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import Nodes.StackNode;
 
-public class Sklad<T extends Comparable<T>> extends Stack<T> implements Seznam<T> {
-
+public class Sklad<T> extends Stack<T> implements Seznam<T> {
+	
 	public Sklad() {
 		super();
 	}

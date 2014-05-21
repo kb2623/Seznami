@@ -7,16 +7,19 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
 import Nodes.BstNode;
 
-public class Bst<T extends Comparable<T>> implements Seznam<T> {
+public class Bst<T> implements Seznam<T> {
 
 	private BstNode<T> rootNode;
+	private Comparator cmp;
 	private T minNodeValue;
 
-	public Bst() {
+	public Bst(Comparator<T> comparator) {
 		this.rootNode = null;
+		this.cmp = comparator;
 	}
 
 	private boolean member(T e) {
@@ -27,9 +30,9 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 	private boolean member(T e, BstNode<T> node) {
 		if (node == null) {
 			return false;
-		} else if (e.compareTo(node.value) == 0) {
+		} else if (this.cmp.compare(e, node.value) == 0) {
 			return true;
-		} else if (e.compareTo(node.value) < 0) {
+		} else if (this.cmp.compare(e, node.value) < 0) {
 			return this.member(e, node.left);
 		} else {
 			return this.member(e, node.right);
@@ -47,9 +50,9 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 	private BstNode<T> insertLeaf(T e, BstNode<T> node) {
 		if (node == null) {
 			node = new BstNode<>(e);
-		} else if (e.compareTo(node.value) < 0) {
+		} else if (this.cmp.compare(e, node.value) < 0) {
 			node.left = this.insertLeaf(e, node.left);
-		} else if (e.compareTo(node.value) > 0) {
+		} else if (this.cmp.compare(e, node.value) > 0) {
 			node.right = this.insertLeaf(e, node.right);
 		} else {
 			throw new java.lang.IllegalArgumentException();
@@ -59,7 +62,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 
 	private BstNode<T> delete(T e, BstNode<T> node) {
 		if (node != null) {
-			if (e.compareTo(node.value) == 0) {
+			if (this.cmp.compare(e, node.value) == 0) {
 				if (node.left == null) {
 					node = node.right;
 				} else if (node.right == null) {
@@ -68,7 +71,7 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 					node.right = this.deleteMin(node.right);
 					node.value = this.minNodeValue;
 				}
-			} else if (e.compareTo(node.value) < 0) {
+			} else if (this.cmp.compare(e, node.value) < 0) {
 				node.left = this.delete(e, node.left);
 			} else {
 				node.right = this.delete(e, node.right);

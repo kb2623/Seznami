@@ -7,15 +7,18 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
 import Nodes.BinHeapaNode;
 
-public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
+public class BinomskaKopica<T> implements Seznam<T> {
 
 	private BinHeapaNode<T> topNode;
+	private Comparator<T> cmp;
 
-	public BinomskaKopica() {
+	public BinomskaKopica(Comparator<T> comparator) {
         this.topNode = null;
+		this.cmp = comparator;
     }
 
 	@Override
@@ -31,7 +34,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 	}
 
 	private BinHeapaNode<T> merge(BinHeapaNode<T> prevNode, BinHeapaNode<T> nextNode) {
-		if(prevNode.data.compareTo(nextNode.data) < 0) {
+		if(this.cmp.compare(prevNode.data, nextNode.data) < 0) {
 			prevNode.parent = nextNode;
 			prevNode.sibling = nextNode.child;
 			nextNode.child = prevNode;
@@ -56,7 +59,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 			BinHeapaNode<T> prevMax = null, currMax = this.topNode;
 			BinHeapaNode<T> curr = this.topNode;
 			while(curr.sibling != null) {
-				if(curr.sibling.data.compareTo(currMax.data) > 0) 	{
+				if(this.cmp.compare(curr.sibling.data, currMax.data) > 0) 	{
 					currMax = curr.sibling;
 					prevMax = curr;
 				}
@@ -94,7 +97,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 			T max = this.topNode.data;
 			BinHeapaNode<T> curr = this.topNode;
 			while(curr != null) {
-				if(max.compareTo(curr.data) < 0) {
+				if(this.cmp.compare(max, curr.data) < 0) {
 					max = curr.data;
 				}
 				curr = curr.sibling;
@@ -176,9 +179,9 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 		while(curr != null || !stack.isEmpty()) {
 			if(curr == null) {
 				curr = stack.pop().sibling;
-			} else if(curr.data.compareTo(e) == 0) {
+			} else if(this.cmp.compare(curr.data, e) == 0) {
 				break;
-			} else if(curr.data.compareTo(e) > 0) {
+			} else if(this.cmp.compare(curr.data, e) > 0) {
 				stack.push(curr);
 				curr = curr.child;
 			} else {
@@ -235,9 +238,7 @@ public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 					prev = this.topNode;
 				}
 			}
-			if(curr != null) {
-				this.topNode = fixAll(this.topNode);
-			}
+			this.topNode = fixAll(this.topNode);
 		}
 	}
 

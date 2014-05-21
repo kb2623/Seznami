@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.HashMap;
+import Comparators.*;
 
 public class SeznamiUV {
 
@@ -14,10 +15,10 @@ public class SeznamiUV {
 
 	public SeznamiUV() {
 		this.seznami = new HashMap<>();
-		this.seznami.put("pv", new PrioritetnaVrsta<String>());
-		this.seznami.put("sk", new Sklad<String>());
-		this.seznami.put("bst", new Bst<String>());
-		this.seznami.put("bk", new BinomskaKopica<String>());
+		this.seznami.put("pv", new PrioritetnaVrsta<>(new CompareString()));
+		this.seznami.put("sk", new Sklad<>());
+		this.seznami.put("bst", new Bst<>(new CompareString()));
+		this.seznami.put("bk", new BinomskaKopica<>(new CompareString()));
 		this.seznam = null;
 	}
 

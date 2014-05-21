@@ -7,6 +7,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import Comparators.*;
 
 public class PrioritetnaVrstaTest {
 
@@ -15,8 +16,8 @@ public class PrioritetnaVrstaTest {
 
 	@Before
 	public void setUp() {
-		this.pv = new PrioritetnaVrsta<>(10);
-		this.instance = new PrioritetnaVrsta<>();
+		this.pv = new PrioritetnaVrsta<>(10, new CompareString());
+		this.instance = new PrioritetnaVrsta<>(new CompareInteger());
 	}
 	
 	@Test
@@ -118,7 +119,7 @@ public class PrioritetnaVrstaTest {
 
 	@Test
 	public void testAdd_Overflow() {
-		pv = new PrioritetnaVrsta<>(2);
+		pv = new PrioritetnaVrsta<>(2, new CompareString());
 		pv.add("Test1");
 		pv.add("Test2");
 		pv.add("Test3");

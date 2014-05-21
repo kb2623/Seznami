@@ -4,6 +4,7 @@ import Source.Bst;
 import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
+import Comparators.*;
 
 public class BstTest {
 
@@ -12,8 +13,8 @@ public class BstTest {
 
 	@Before
 	public void setUp() {
-		this.bst = new Bst<>();
-		this.instance = new Bst<>();
+		this.bst = new Bst<>(new CompareString());
+		this.instance = new Bst<>(new CompareInteger());
 	}
 	
 	@Test
