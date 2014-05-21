@@ -10,12 +10,22 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Comparator;
 
-public class PrioritetnaVrsta<T> implements Seznam<T> {
+public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 
 	private Object[] heap;
 	private int end;
 	private Comparator<T> cmp;
 	private static final byte ADD_SIZE = 2;
+	
+	public PrioritetnaVrsta(int maxSize) {
+		this.heap = new Object[maxSize];
+		this.end = 0;
+		this.cmp = null;
+	}
+	
+	public PrioritetnaVrsta() {
+		this(100);
+	}
 
 	public PrioritetnaVrsta(int maxSize, Comparator<T> comparator) {
 		this.heap = new Object[maxSize];
@@ -25,6 +35,14 @@ public class PrioritetnaVrsta<T> implements Seznam<T> {
 
 	public PrioritetnaVrsta(Comparator<T> comparator) {
 		this(100, comparator);		
+	}
+	
+	private int compare(T o1, T o2) {
+		if(this.cmp == null) {
+			return o1.compareTo(o2);
+		} else {
+			return this.cmp.compare(o1, o2);
+		}
 	}
 
 	@Override
@@ -49,10 +67,10 @@ public class PrioritetnaVrsta<T> implements Seznam<T> {
 			int cIndex = pIndex * 2 + 1;
 			if(cIndex < this.end) {
 				T cValue = (T) this.heap[cIndex];
-				if(cIndex + 1 < this.end && this.cmp.compare(cValue, (T) this.heap[cIndex + 1]) < 0) {
+				if(cIndex + 1 < this.end && this.compare(cValue, (T) this.heap[cIndex + 1]) < 0) {
 					cValue = (T) this.heap[++cIndex];
 				}
-				if(this.cmp.compare(pValue, cValue) >= 0) {
+				if(this.compare(pValue, cValue) >= 0) {
 					return;
 				}
 				this.swap(pIndex, cIndex);
@@ -85,10 +103,10 @@ public class PrioritetnaVrsta<T> implements Seznam<T> {
 		int pIndex = start, cIndex = pIndex * 2 + 1; 
 		while(cIndex < this.end) {
 			T cValue = (T) this.heap[cIndex] , pValue = (T) this.heap[pIndex];
-			if(cIndex + 1 < this.end && this.cmp.compare(cValue, (T) this.heap[cIndex + 1]) < 0) {
+			if(cIndex + 1 < this.end && this.compare(cValue, (T) this.heap[cIndex + 1]) < 0) {
 				cValue = (T) this.heap[++cIndex];
 			}
-			if(this.cmp.compare(pValue, cValue) >= 0) {
+			if(this.compare(pValue, cValue) >= 0) {
 				return;
 			}
 			this.swap(pIndex, cIndex);
@@ -134,9 +152,9 @@ public class PrioritetnaVrsta<T> implements Seznam<T> {
 	private boolean exists(T e, int index) {
 		if(index >= this.end) {
 			return false;
-		} else if(this.cmp.compare((T) this.heap[index], e) < 0) {
+		} else if(this.compare((T) this.heap[index], e) < 0) {
 			return false;
-		} else if(this.cmp.compare((T) this.heap[index], e) == 0) {
+		} else if(this.compare((T) this.heap[index], e) == 0) {
 			return true;
 		} else {
 			return this.exists(e, index * 2 + 1) || this.exists(e, index * 2 + 2);
@@ -161,9 +179,9 @@ public class PrioritetnaVrsta<T> implements Seznam<T> {
 	private int search(T e, int index) {
 		if(index >= this.end) {
 			return -1;
-		} else if(this.cmp.compare((T) this.heap[index], e) < 0) {
+		} else if(this.compare((T) this.heap[index], e) < 0) {
 			return -1;
-		} else if(this.cmp.compare((T) this.heap[index], e) == 0) {
+		} else if(this.compare((T) this.heap[index], e) == 0) {
 			return index;
 		} else {
 			int left = this.search(e, index * 2 + 1);

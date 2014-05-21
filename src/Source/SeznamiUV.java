@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.HashMap;
-import Comparators.*;
 
 public class SeznamiUV {
 
@@ -15,11 +14,15 @@ public class SeznamiUV {
 
 	public SeznamiUV() {
 		this.seznami = new HashMap<>();
-		this.seznami.put("pv", new PrioritetnaVrsta<>(new CompareString()));
+		this.seznami.put("pv", new PrioritetnaVrsta<>());
 		this.seznami.put("sk", new Sklad<>());
-		this.seznami.put("bst", new Bst<>(new CompareString()));
-		this.seznami.put("bk", new BinomskaKopica<>(new CompareString()));
+		this.seznami.put("bst", new Bst<>());
+		this.seznami.put("bk", new BinomskaKopica<>());
 		this.seznam = null;
+	}
+	
+	public void addImplementations(String name, Seznam seznam) {
+		this.seznami.put(name, seznam);
 	}
 
 	public String processInput(String input) {
@@ -66,6 +69,8 @@ public class SeznamiUV {
 					res = "Error: priority queue is empty";
 				} else if(this.seznam instanceof Bst){
 					res = "Error: bst tree is empty";
+				} else if(this.seznam instanceof BinomskaKopica) {
+					res = "Error: binomial queue is empty";
 				} else {
 					res = "Error: bk queue is empty";
 				}
@@ -81,6 +86,8 @@ public class SeznamiUV {
 					res = "Error: priority queue is empty";
 				} else if(this.seznam instanceof Bst){
 					res = "Error: bst tree is empty";
+				}  else if(this.seznam instanceof BinomskaKopica) {
+					res = "Error: binomial queue is empty";
 				} else {
 					res = "Error: bk queue is empty";
 				}
@@ -126,6 +133,8 @@ public class SeznamiUV {
 						res = "Error: priority queue is empty";
 					} else if(this.seznam instanceof Bst){
 						res = "Error: bst tree is empty";
+					} else if(this.seznam instanceof BinomskaKopica) {
+						res = "Error: binomial queue is empty";
 					} else {
 						res = "Error: bk queue is empty";
 					}
@@ -149,6 +158,8 @@ public class SeznamiUV {
 						res = "Error: priority queue is empty";
 					} else if(this.seznam instanceof Bst){
 						res = "Error: bst tree is empty";
+					} else if(this.seznam instanceof BinomskaKopica) {
+						res = "Error: binomial queue is empty";
 					} else {
 						res = "Error: bk queue is empty";
 					}

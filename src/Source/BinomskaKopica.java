@@ -11,15 +11,37 @@ import java.util.Comparator;
 
 import Nodes.BinHeapaNode;
 
-public class BinomskaKopica<T> implements Seznam<T> {
+public class BinomskaKopica<T extends Comparable<T>> implements Seznam<T> {
 
 	private BinHeapaNode<T> topNode;
 	private Comparator<T> cmp;
+	
+	public BinomskaKopica() {
+		this.topNode = null;
+		this.cmp = null;
+	}
 
 	public BinomskaKopica(Comparator<T> comparator) {
         this.topNode = null;
 		this.cmp = comparator;
     }
+	
+	public void setComparator(Comparator<T> comparator) {
+		List<T> list = this.asList();
+		this.cmp = comparator;
+		this.topNode = null;
+		for(T t: list) {
+			this.add(t);
+		}
+	}
+	
+	private int compare(T o1, T o2) {
+		if(this.cmp != null) {
+			return this.cmp.compare(o1, o2);
+		} else {
+			return o1.compareTo(o2);
+		}
+	}
 
 	@Override
 	public void add(T e) {
@@ -34,7 +56,7 @@ public class BinomskaKopica<T> implements Seznam<T> {
 	}
 
 	private BinHeapaNode<T> merge(BinHeapaNode<T> prevNode, BinHeapaNode<T> nextNode) {
-		if(this.cmp.compare(prevNode.data, nextNode.data) < 0) {
+		if(this.compare(prevNode.data, nextNode.data) < 0) {
 			prevNode.parent = nextNode;
 			prevNode.sibling = nextNode.child;
 			nextNode.child = prevNode;
@@ -59,7 +81,7 @@ public class BinomskaKopica<T> implements Seznam<T> {
 			BinHeapaNode<T> prevMax = null, currMax = this.topNode;
 			BinHeapaNode<T> curr = this.topNode;
 			while(curr.sibling != null) {
-				if(this.cmp.compare(curr.sibling.data, currMax.data) > 0) 	{
+				if(this.compare(curr.sibling.data, currMax.data) > 0) 	{
 					currMax = curr.sibling;
 					prevMax = curr;
 				}
@@ -97,7 +119,7 @@ public class BinomskaKopica<T> implements Seznam<T> {
 			T max = this.topNode.data;
 			BinHeapaNode<T> curr = this.topNode;
 			while(curr != null) {
-				if(this.cmp.compare(max, curr.data) < 0) {
+				if(this.compare(max, curr.data) < 0) {
 					max = curr.data;
 				}
 				curr = curr.sibling;
@@ -179,9 +201,9 @@ public class BinomskaKopica<T> implements Seznam<T> {
 		while(curr != null || !stack.isEmpty()) {
 			if(curr == null) {
 				curr = stack.pop().sibling;
-			} else if(this.cmp.compare(curr.data, e) == 0) {
+			} else if(this.compare(curr.data, e) == 0) {
 				break;
-			} else if(this.cmp.compare(curr.data, e) > 0) {
+			} else if(this.compare(curr.data, e) > 0) {
 				stack.push(curr);
 				curr = curr.child;
 			} else {
