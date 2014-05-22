@@ -17,24 +17,22 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 	private Comparator<T> cmp;
 	private static final byte ADD_SIZE = 2;
 	
-	public PrioritetnaVrsta(int maxSize) {
-		this.heap = new Object[maxSize];
-		this.end = 0;
-		this.cmp = null;
-	}
-	
-	public PrioritetnaVrsta() {
-		this(100);
-	}
-
 	public PrioritetnaVrsta(int maxSize, Comparator<T> comparator) {
 		this.heap = new Object[maxSize];
 		this.end = 0;
 		this.cmp = comparator;
 	}
+	
+	public PrioritetnaVrsta(int maxSize) {
+		this(maxSize, null);
+	}
 
 	public PrioritetnaVrsta(Comparator<T> comparator) {
 		this(100, comparator);		
+	}
+	
+	public PrioritetnaVrsta() {
+		this(100, null);
 	}
 	
 	private int compare(T o1, T o2) {

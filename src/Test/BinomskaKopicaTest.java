@@ -1,7 +1,6 @@
 package Test;
 
 import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Test;
 import Source.BinomskaKopica;
 import java.util.List;
@@ -11,18 +10,29 @@ public class BinomskaKopicaTest {
 
 	private BinomskaKopica<Integer> instance;
 
-	@Before
-	public void setUp() throws Exception {
+	private void setUpComparable() {
+		this.instance = new BinomskaKopica<>();
+	}
+	
+	private void setUpComparator() {
 		this.instance = new BinomskaKopica<>(new CompareInteger());
 	}
+	
+	@Test
+	public void testAdd() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testAdd_One();
+		setUpComparable(); testAdd_More();
+		//Urejenost z uporabo >> Comparator
+		setUpComparator(); testAdd_One();
+		setUpComparator(); testAdd_More();
+	}
 
-	@Test(timeout = 250)
-	public void testAdd_One() {
+	private void testAdd_One() {
 		instance.add(23);
 	}
 
-	@Test(timeout = 250)
-	public void testAdd_More() {
+	private void testAdd_More() {
 		instance.add(43);
 		instance.add(63);
 		instance.add(62);
@@ -37,20 +47,43 @@ public class BinomskaKopicaTest {
 		instance.add(1);
 		instance.add(89);
 	}
+	
+	@Test
+	public void testRemoveFirst() {
+		//Urejenost z uporabo >> Comparable
+		try {
+			setUpComparable(); testRemoveFirst_Empty(); assert false; 
+		} catch(java.util.NoSuchElementException e) { 
+			assert true; 
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparable(); testRemoveFirst_One();
+		setUpComparable(); testRemoveFirst_MoreFirst();
+		setUpComparable(); testRemoveFirst_MoreTwo();
+		//Urejenost z uporabo >> Comparator
+		try {
+			setUpComparator(); testRemoveFirst_Empty(); assert false; 
+		} catch(java.util.NoSuchElementException e) { 
+			assert true; 
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparator(); testRemoveFirst_One();
+		setUpComparator(); testRemoveFirst_MoreFirst();
+		setUpComparator(); testRemoveFirst_MoreTwo();
+	}
 
-	@Test(timeout = 250, expected = java.util.NoSuchElementException.class)
-	public void testRemoveFirst_Empty() {
+	private void testRemoveFirst_Empty() {
 		instance.removeFirst();
 	}
 
-	@Test(timeout = 250)
-	public void testRemoveFirst_One() {
+	private void testRemoveFirst_One() {
 		instance.add(34);
 		assertEquals(new Integer(34), instance.removeFirst());
 	}
 
-	@Test(timeout = 250)
-	public void testRemoveFirst_MoreFirst() {
+	private void testRemoveFirst_MoreFirst() {
 		instance.add(43);
 		instance.add(63);
 		instance.add(62);
@@ -79,8 +112,7 @@ public class BinomskaKopicaTest {
 		assertEquals(new Integer(1), instance.removeFirst());
 	}
 
-	@Test(timeout = 250)
-	public void testRemoveFirst_MoreTwo() {
+	private void testRemoveFirst_MoreTwo() {
 		for(int i = 0; i < 20; i++) {
 			instance.add(i);
 		}
@@ -89,20 +121,41 @@ public class BinomskaKopicaTest {
 			assertEquals(new Integer(i), instance.removeFirst());
 		}
 	}
+	
+	@Test
+	public void testGetFirst() {
+		//Urejenost z uporabo >> Comparable
+		try {
+			setUpComparable(); testGetFirst_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparable(); testGetFirst_One();
+		setUpComparable(); testGetFirst_More();
+		//Urejenost z uporabo >> Comparator
+		try {
+			setUpComparator(); testGetFirst_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparator(); testGetFirst_One();
+		setUpComparator(); testGetFirst_More();
+	}
 
-	@Test(timeout = 250, expected = java.util.NoSuchElementException.class)
-	public void testGetFirst_Empty() {
+	private void testGetFirst_Empty() {
 		instance.getFirst();
 	}
 
-	@Test(timeout = 250)
-	public void testGetFirst_One() {
+	private void testGetFirst_One() {
 		instance.add(100);
 		assertEquals(new Integer(100), instance.getFirst());
 	}
 
-	@Test(timeout = 250)
-	public void testGetFirst_More() {
+	private void testGetFirst_More() {
 		instance.add(43);
 		instance.add(63);
 		instance.add(62);
@@ -118,79 +171,115 @@ public class BinomskaKopicaTest {
 		instance.add(89);
 		assertEquals(new Integer(90), instance.getFirst());
 	}
+	
+	@Test
+	public void testSize() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testSize_Empty();
+		setUpComparable(); testSize_One();
+		setUpComparable(); testSize_Random();
+		//Urejenost z uporabo >> Comparable
+		setUpComparator(); testSize_Empty();
+		setUpComparator(); testSize_One();
+		setUpComparator(); testSize_Random();
+	}
 
-	@Test(timeout = 250)
-	public void testSize_Empty() {
+	private void testSize_Empty() {
 		assertEquals(0, instance.size());
 	}
 
-	@Test(timeout = 250)
-	public void testSize_One() {
+	private void testSize_One() {
 		instance.add(23);
 		assertEquals(1, instance.size());
 	}
 
-	@Test(timeout = 250)
-	public void testSize_Random() {
+	private void testSize_Random() {
 		int numOfEle = (int)(Math.random() * 100);
 		for(int i = numOfEle; i > 0; i--) {
 			instance.add(i);
 		}
 		assertEquals(numOfEle, instance.size());
 	}
+	
+	@Test
+	public void testDepth() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testDepth_Empty();
+		setUpComparable(); testDepth_One();
+		setUpComparable(); testDepth_Two();
+		setUpComparable(); testDepth_More();
+		//Urejenost z uporabo >> Comparable
+		setUpComparator(); testDepth_Empty();
+		setUpComparator(); testDepth_One();
+		setUpComparator(); testDepth_Two();
+		setUpComparator(); testDepth_More();
+	}
 
-	@Test(timeout = 250)
-	public void testDepth_Empty() {
+	private void testDepth_Empty() {
 		assertEquals(0, instance.depth());
 	}
 
-	@Test(timeout = 250)
-	public void testDepth_One() {
+	private void testDepth_One() {
 		instance.add(42);
 		assertEquals(0, instance.depth());
 	}
 
-	@Test(timeout = 250)
-	public void testDepth_Two() {
+	private void testDepth_Two() {
 		instance.add(32);
 		instance.add(43);
 		assertEquals(1, instance.depth());
 	}
 
-	@Test(timeout = 250)
-	public void testDepth_More() {
+	private void testDepth_More() {
 		for(int i = 0; i < 20; i++) {
 			instance.add(i);
 		}
 		assertEquals(4, instance.depth());
 	}
-
+	
 	@Test
-	public void testIsEmpty_True() {
+	public void testIsEmpty() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testIsEmpty_True();
+		setUpComparable(); testIsEmpty_False();
+		//Urejenost z uporabo >> Comparable
+		setUpComparator(); testIsEmpty_True();
+		setUpComparator(); testIsEmpty_False();
+	}
+
+	private void testIsEmpty_True() {
 		assertTrue(instance.isEmpty());
 	}
 
-	@Test(timeout = 250)
-	public void testIsEmpty_False() {
+	private void testIsEmpty_False() {
 		assertTrue(instance.isEmpty());
 		instance.add(42);
 		assertFalse(instance.isEmpty());
 	}
+	
+	@Test
+	public void testExists() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testExists_Empty();
+		setUpComparable(); testExists_One();
+		setUpComparable(); testExists_More();
+		//Urejenost z uporabo >> Comparable
+		setUpComparator(); testExists_Empty();
+		setUpComparator(); testExists_One();
+		setUpComparator(); testExists_More();
+	}
 
-	@Test(timeout = 250)
-	public void testExists_Empty() {
+	private void testExists_Empty() {
 		assertFalse(instance.exists(12));
 	}
 
-	@Test(timeout = 250)
-	public void testExists_One() {
+	private void testExists_One() {
 		instance.add(32);
 		assertFalse(instance.exists(23));
 		assertTrue(instance.exists(32));
 	}
 
-	@Test(timeout = 250)
-	public void testExists_More() {
+	private void testExists_More() {
 		instance.add(43);
 		instance.add(63);
 		instance.add(62);
@@ -220,27 +309,75 @@ public class BinomskaKopicaTest {
 		assertTrue(instance.exists(62));
 		assertTrue(instance.exists(7));
 	}
+	
+	@Test
+	public void testRemove() {
+		//Urejenost z uporabo >> Comparable
+		try {
+			setUpComparable(); testRemove_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparable(); testRemove_OneBad(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try{
+			setUpComparable(); testRemove_MoreTwo(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparable(); testRemove_OneGood();
+		setUpComparable(); testRemove_MoreOne();
+		//Urejenost z uporabo >> Comparable
+		try {
+			setUpComparator(); testRemove_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparator(); testRemove_OneBad(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try{
+			setUpComparator(); testRemove_MoreTwo(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparator(); testRemove_OneGood();
+		setUpComparator(); testRemove_MoreOne();
+	}
 
-	@Test(timeout = 250, expected = java.util.NoSuchElementException.class)
-	public void testRemove_Empty() {
+	private void testRemove_Empty() {
 		assertTrue(instance.isEmpty());
 		instance.remove(89);
 	}
 
-	@Test(timeout = 250, expected = java.util.NoSuchElementException.class)
-	public void testRemove_OneBad() {
+	private void testRemove_OneBad() {
 		instance.add(43);
 		instance.remove(34);
 	}
 
-	@Test(timeout = 250)
-	public void testRemove_OneGood() {
+	private void testRemove_OneGood() {
 		instance.add(34);
 		assertEquals(new Integer(34), instance.remove(34));
 	}
 
-	@Test(timeout = 250)
-	public void testRemove_MoreOne() {
+	private void testRemove_MoreOne() {
 		instance.add(43);
 		instance.add(63);
 		instance.add(62);
@@ -269,8 +406,7 @@ public class BinomskaKopicaTest {
 		assertEquals(new Integer(20), instance.remove(20));
 	}
 
-	@Test(timeout = 250, expected = java.util.NoSuchElementException.class)
-	public void testRemove_MoreTwo() {
+	private void testRemove_MoreTwo() {
 		instance.add(43);
 		instance.add(87);
 		instance.add(12);
@@ -289,18 +425,31 @@ public class BinomskaKopicaTest {
 	}
 	
 	@Test
-	public void testAsList_Empty() {
+	public void testAsList() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testAsList_Empty();
+		setUpComparable(); testAsList_One();
+		setUpComparable(); testAsList_Two();
+		setUpComparable(); testAsList_Multi_One();
+		setUpComparable(); testAsList_Multi_Two();
+		//Urejenost z uporabo >> Comparable
+		setUpComparator(); testAsList_Empty();
+		setUpComparator(); testAsList_One();
+		setUpComparator(); testAsList_Two();
+		setUpComparator(); testAsList_Multi_One();
+		setUpComparator(); testAsList_Multi_Two();
+	}
+	
+	private void testAsList_Empty() {
 		assertEquals(null, instance.asList());
 	}
 	
-	@Test
-	public void testAsList_One() {
+	private void testAsList_One() {
 		instance.add(23);
 		assertEquals(new Integer(23), instance.asList().get(0));
 	}
 	
-	@Test
-	public void testAsList_Two() {
+	private void testAsList_Two() {
 		StringBuilder builder = new StringBuilder();
 		List<Integer> list;
 		instance.add(23);
@@ -312,8 +461,7 @@ public class BinomskaKopicaTest {
 		assertEquals("23 55 ", builder.toString());
 	}
 
-	@Test
-	public void testAsList_Multi_One() {
+	private void testAsList_Multi_One() {
 		StringBuilder sb = new StringBuilder();
 		instance.add(34);
 		instance.add(23);
@@ -328,8 +476,7 @@ public class BinomskaKopicaTest {
 		assertEquals("7 16 23 34 21 55 ", sb.toString());
 	}
 	
-	@Test
-	public void testAsList_Multi_Two() {
+	private void testAsList_Multi_Two() {
 		StringBuilder builder = new StringBuilder();
 		instance.add(9);
 		instance.add(5);

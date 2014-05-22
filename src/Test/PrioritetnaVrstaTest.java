@@ -5,7 +5,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.Test;
 import Comparators.*;
 
@@ -14,14 +13,29 @@ public class PrioritetnaVrstaTest {
 	private PrioritetnaVrsta<String> pv;
 	private PrioritetnaVrsta<Integer> instance;
 
-	@Before
-	public void setUp() {
+	private void setUpComparable() {
+		this.pv = new PrioritetnaVrsta<>(10);
+		this.instance = new PrioritetnaVrsta<>();
+	}
+	
+	private void setUpComparator() {
 		this.pv = new PrioritetnaVrsta<>(10, new CompareString());
 		this.instance = new PrioritetnaVrsta<>(new CompareInteger());
 	}
 	
 	@Test
-	public void testPrioritetnaVrsta_One() {
+	public void testPrioritetnaVrsta() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testPrioritetnaVrsta_One();
+		setUpComparable(); testPrioritetnaVrsta_Two();
+		setUpComparable(); testPrioritetnaVrsta_Three();
+		//Urejenost z uporabo >> Comparator
+		setUpComparator(); testPrioritetnaVrsta_One();
+		setUpComparable(); testPrioritetnaVrsta_Two();
+		setUpComparable(); testPrioritetnaVrsta_Three();
+	}
+	
+	private void testPrioritetnaVrsta_One() {
 	StringBuilder buff = new StringBuilder();
 		for(int i = 0; i < 20; i++) {
 			instance.add(i);
@@ -32,8 +46,7 @@ public class PrioritetnaVrstaTest {
 		assertEquals("19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 ", buff.toString());
 	}
 
-	@Test
-	public void testPrioritetnaVrsta_Two() {
+	private void testPrioritetnaVrsta_Two() {
 		StringBuilder buff = new StringBuilder();
 		assertTrue(instance.isEmpty());
 		instance.add(73);
@@ -69,8 +82,7 @@ public class PrioritetnaVrstaTest {
 		assertTrue(instance.isEmpty());
 	}
 
-	@Test
-	public void testPrioritetnaVrsta_Three() {
+	private void testPrioritetnaVrsta_Three() {
 		StringBuilder buff = new StringBuilder();
 		assertTrue(instance.isEmpty());
 		assertFalse(instance.exists(8));
@@ -107,32 +119,55 @@ public class PrioritetnaVrstaTest {
 	}
 	
 	@Test
-	public void testAdd_One() {
+	public void testAdd() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testAdd_One();
+		setUpComparable(); testAdd_Multiple();
+		testAdd_Overflow(true);
+		//Urejenost z uporabo >> Comparator
+		setUpComparator(); testAdd_One();
+		setUpComparator(); testAdd_Multiple();
+		testAdd_Overflow(false);
+	}
+	
+	private void testAdd_One() {
 		instance.add(12);
 	}
 
-	@Test
-	public void testAdd_Multiple() {
+	private void testAdd_Multiple() {
 		pv.add("Test1");
 		pv.add("Test2");
 	}
 
-	@Test
-	public void testAdd_Overflow() {
-		pv = new PrioritetnaVrsta<>(2, new CompareString());
+	private void testAdd_Overflow(boolean cmp) {
+		if(cmp) {
+			pv = new PrioritetnaVrsta<>(2);
+		} else  {
+			pv = new PrioritetnaVrsta<>(2, new CompareString());
+		}
 		pv.add("Test1");
 		pv.add("Test2");
 		pv.add("Test3");
 	}
-
+	
 	@Test
-	public void testAsList_Empty() {
+	public void testAsList() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testAsList_Empty();
+		setUpComparable(); testAsList_One();
+		setUpComparable(); testAsList_More();
+		//Urejenost z uporabo >> Comparator
+		setUpComparator(); testAsList_Empty();
+		setUpComparator(); testAsList_One();
+		setUpComparator(); testAsList_More();
+	}
+
+	private void testAsList_Empty() {
 		assertTrue(instance.isEmpty());
 		assertEquals(null, instance.asList());
 	}
 
-	@Test
-	public void testAsList_One() {
+	private void testAsList_One() {
 		StringBuilder buff = new StringBuilder();
 		List<Integer> list;
 		instance.add(32);
@@ -143,8 +178,7 @@ public class PrioritetnaVrstaTest {
 		assertEquals("32 ", buff.toString());
 	}
 
-	@Test
-	public void testAsList_More() {
+	private void testAsList_More() {
 		StringBuilder sb = new StringBuilder();
 		List<Integer> list;
 		for(int i = 0; i < 20; i++) {
@@ -157,8 +191,45 @@ public class PrioritetnaVrstaTest {
 		assertEquals("19 18 13 16 17 10 12 9 15 8 7 1 5 4 11 0 6 3 14 2 ", sb.toString());
 	}
 	
-	@Test(expected = java.util.NoSuchElementException.class)
+	@Test
 	public void testRemoveFirst() {
+		//Urejenost z uporabo >> Comparable
+		try {
+			setUpComparable(); testRemoveFirst_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparable(); testRemoveFirst_Exception(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparable(); testRemoveFirst_One();
+		setUpComparable(); testRemoveFirst_Multiple();
+		//Urejenost z uporabo >> Comparator
+		try {
+			setUpComparator(); testRemoveFirst_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparator(); testRemoveFirst_Exception(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparator(); testRemoveFirst_One();
+		setUpComparator(); testRemoveFirst_Multiple();
+	}
+	
+	private void testRemoveFirst_Exception() {
 		instance.add(32);
 		instance.add(23);
 		instance.add(15);
@@ -178,19 +249,16 @@ public class PrioritetnaVrstaTest {
 		instance.removeFirst();
 	}
 
-	@Test(expected = java.util.NoSuchElementException.class)
-	public void testRemoveFirst_Empty() {
+	private void testRemoveFirst_Empty() {
 		instance.removeFirst();
 	}
 	
-	@Test
-	public void testRemoveFirst_One() {
+	private void testRemoveFirst_One() {
 		pv.add("Test");
 		assertEquals("Test", pv.removeFirst());
 	}
 
-	@Test
-	public void testRemoveFirst_Multiple() {
+	private void testRemoveFirst_Multiple() {
 		pv.add("Test1");
 		pv.add("Test5");
 		pv.add("Test2");
@@ -203,8 +271,45 @@ public class PrioritetnaVrstaTest {
 		assertEquals("Test1", pv.removeFirst());
 	}
 	
-	@Test(expected = java.util.NoSuchElementException.class)
+	@Test
 	public void testGetFirst() {
+		//Urejenost z uporabo >> Comparable
+		try {
+			setUpComparable(); testGetFirst_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparable(); testGetFirst_Exception(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparable(); testGetFirst_One();
+		setUpComparable(); testGetFirst_Multiple();
+		//Urejenost z uporabo >> Comparator
+		try {
+			setUpComparator(); testGetFirst_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparator(); testGetFirst_Exception(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparator(); testGetFirst_One();
+		setUpComparator(); testGetFirst_Multiple();
+	}
+	
+	private void testGetFirst_Exception() {
 		instance.add(41);
 		instance.add(13);
 		instance.add(89);
@@ -232,19 +337,16 @@ public class PrioritetnaVrstaTest {
 		instance.getFirst();
 	}
 	
-	@Test(expected = java.util.NoSuchElementException.class)
-	public void testGetFirst_Empty() {
+	private void testGetFirst_Empty() {
 		instance.getFirst();
 	}
 	
-	@Test
-	public void testGetFirst_One() {
+	private void testGetFirst_One() {
 		pv.add("Test");
 		assertEquals("Test", pv.getFirst());
 	}
 
-	@Test
-	public void testGetFirst_Multiple() {
+	private void testGetFirst_Multiple() {
 		pv.add("Test1");
 		assertEquals("Test1", pv.getFirst());
 		pv.add("Test3");
@@ -255,6 +357,19 @@ public class PrioritetnaVrstaTest {
 	
 	@Test
 	public void testSize() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testSize_Empty();
+		setUpComparable(); testSize_One();
+		setUpComparable(); testSize_Basic();
+		setUpComparable(); testSize_Multiple();
+		//Urejenost z uporabo >> Comparator
+		setUpComparator(); testSize_Empty();
+		setUpComparator(); testSize_One();
+		setUpComparator(); testSize_Basic();
+		setUpComparator(); testSize_Multiple();
+	}
+	
+	private void testSize_Basic() {
 		int size = (int)(Math.random() * 100) + 1;
 		for(int i = 0; i < size; i++) {
 			instance.add((int)(Math.random() * 1000) + 1);
@@ -262,19 +377,16 @@ public class PrioritetnaVrstaTest {
 		assertEquals(size, instance.size());
 	}
 
-	@Test
-	public void testSize_Empty() {
+	private void testSize_Empty() {
 		assertEquals(0, instance.size());
 	}
 	
-	@Test
-	public void testSize_One() {
+	private void testSize_One() {
 		pv.add("Test");
 		assertEquals(1, pv.size());
 	}
 	
-	@Test
-	public void testSize_Multiple() {
+	private void testSize_Multiple() {
 		assertEquals(0, pv.size());
 		pv.add("Test");
 		assertEquals(1, pv.size());
@@ -286,6 +398,19 @@ public class PrioritetnaVrstaTest {
 	
 	@Test
 	public void testDepth() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testDepth_Empty();
+		setUpComparable(); testDepth_One();
+		setUpComparable(); testDepth_Basic();
+		setUpComparable(); testDepth_Multiple();
+		//Urejenost z uporabo >> Comparator
+		setUpComparator(); testDepth_Empty();
+		setUpComparator(); testDepth_One();
+		setUpComparator(); testDepth_Basic();
+		setUpComparator(); testDepth_Multiple();
+	}
+	
+	private void testDepth_Basic() {
 		int size = (int)(Math.random() * 7) + 1;
 		for(int i = 0; i < size; i++) {
 			instance.add((int)(Math.random() * 1000) + 1);
@@ -293,19 +418,16 @@ public class PrioritetnaVrstaTest {
 		assertEquals((int)(Math.log(size) / Math.log(2)) + 1, instance.depth());
 	}
 
-	@Test
-	public void testDepth_Empty() {
+	private void testDepth_Empty() {
 		assertEquals(0, instance.depth());
 	}
 	
-	@Test
-	public void testDepth_One() {
+	private void testDepth_One() {
 		pv.add("Test1");
 		assertEquals(1, pv.depth());
 	}
 
-	@Test
-	public void testDepth_Multiple() {
+	private void testDepth_Multiple() {
 		pv.add("Test1");
 		assertEquals(1, pv.depth());
 		pv.add("Test5");
@@ -326,6 +448,19 @@ public class PrioritetnaVrstaTest {
 	
 	@Test
 	public void testIsEmpty() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testIsEmpty_Empty();
+		setUpComparable(); testIsEmpty_One();
+		setUpComparable(); testIsEmpty_Basic();
+		setUpComparable(); testIsEmpty_Multiple();
+		//Urejenost z uporabo >> Comparator
+		setUpComparator(); testIsEmpty_Empty();
+		setUpComparator(); testIsEmpty_One();
+		setUpComparator(); testIsEmpty_Basic();
+		setUpComparator(); testIsEmpty_Multiple();
+	}
+	
+	private void testIsEmpty_Basic() {
 		assertTrue(instance.isEmpty());
 		instance.add(32);
 		instance.add(89);
@@ -338,19 +473,16 @@ public class PrioritetnaVrstaTest {
 		assertTrue(instance.isEmpty());
 	}
 	
-	@Test
-	public void testIsEmpty_Empty() {
+	private void testIsEmpty_Empty() {
 		assertTrue(instance.isEmpty());
 	}
 	
-	@Test
-	public void testIsEmpty_One() {
+	private void testIsEmpty_One() {
 		pv.add("Test");
 		assertFalse(pv.isEmpty());
 	}
 
-	@Test
-	public void testIsEmpty_Multiple() {
+	private void testIsEmpty_Multiple() {
 		pv.add("Test");
 		pv.add("Test1");
 		pv.add("Test2");
@@ -359,6 +491,21 @@ public class PrioritetnaVrstaTest {
 	
 	@Test
 	public void testExists() {
+		//Urejenost z uporabo >> Comparable
+		setUpComparable(); testExists_Empty();
+		setUpComparable(); testExists_One();
+		setUpComparable(); testExists_Basic();
+		setUpComparable(); testExists_GoodInput();
+		setUpComparable(); testExists_BadInput();
+		//Urejenost z uporabo >> Comparator
+		setUpComparator(); testExists_Empty();
+		setUpComparator(); testExists_One();
+		setUpComparator(); testExists_Basic();
+		setUpComparator(); testExists_GoodInput();
+		setUpComparator(); testExists_BadInput();
+	}
+	
+	private void testExists_Basic() {
 		instance.add(43);
 		instance.add(32);
 		instance.add(76);
@@ -374,20 +521,17 @@ public class PrioritetnaVrstaTest {
 		assertFalse(instance.exists(9));
 	}
 
-	@Test
-	public void testExists_Empty() {
+	private void testExists_Empty() {
 		assertFalse(instance.exists(12));
 	}
 
-	@Test
-	public void testExists_One() {
+	private void testExists_One() {
 		instance.add(123);
 		assertTrue(instance.exists(123));
 		assertFalse(instance.exists(45));
 	}
 
-	@Test
-	public void testExists_BadInput() {
+	private void testExists_BadInput() {
 		instance.add(32);
 		instance.add(23);
 		instance.add(89);
@@ -397,8 +541,7 @@ public class PrioritetnaVrstaTest {
 		assertFalse(instance.exists(36));
 	}
 
-	@Test
-	public void testExists_GoodInput() {
+	private void testExists_GoodInput() {
 		instance.add(13);
 		instance.add(42);
 		instance.add(56);
@@ -411,8 +554,73 @@ public class PrioritetnaVrstaTest {
 		assertTrue(instance.exists(42));
 	}
 	
-	@Test(expected = java.util.NoSuchElementException.class)
+	@Test
 	public void testRemove() {
+		//Urejenost z uporabo >> Comparable
+		try {
+			setUpComparable(); testRemove_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparable(); testRemove_Exception(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparable(); testRemove_BadInput_One(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparable(); testRemove_BadInput_Two(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparable(); testRemove_GoodInput();
+		setUpComparable(); testRemove_One();
+		//Urejenost z uporabo >> Comparator
+		try {
+			setUpComparator(); testRemove_Empty(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparator(); testRemove_Exception(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparator(); testRemove_BadInput_One(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		try {
+			setUpComparator(); testRemove_BadInput_Two(); assert false;
+		} catch(java.util.NoSuchElementException e) {
+			assert true;
+		} catch(Exception e) {
+			assert false;
+		}
+		setUpComparator(); testRemove_GoodInput();
+		setUpComparator(); testRemove_One();
+	}
+	
+	private void testRemove_Exception() {
 		instance.add(34);
 		instance.add(18);
 		assertEquals(new Integer(18), instance.remove(18));
@@ -432,25 +640,21 @@ public class PrioritetnaVrstaTest {
 		instance.remove(10);
 	}
 
-	@Test(expected = java.util.NoSuchElementException.class)
-	public void testRemove_Empty() {
+	private void testRemove_Empty() {
 		instance.remove(21);
 	}
 
-	@Test
-	public void testRemove_One() {
+	private void testRemove_One() {
 		instance.add(32);
 		instance.remove(32);
 	}
 
-	@Test(expected = java.util.NoSuchElementException.class)
-	public void testRemove_BadInput_One() {
+	private void testRemove_BadInput_One() {
 		instance.add(23);
 		instance.remove(33);
 	}
 
-	@Test(expected = java.util.NoSuchElementException.class)
-	public void testRemove_BadInput_Two() {
+	private void testRemove_BadInput_Two() {
 		instance.add(23);
 		instance.add(73);
 		instance.add(10);
@@ -458,8 +662,7 @@ public class PrioritetnaVrstaTest {
 		instance.remove(6);
 	}
 
-	@Test
-	public void testRemove_GoodInput() {
+	private void testRemove_GoodInput() {
 		instance.add(89);
 		instance.add(43);
 		instance.add(432);

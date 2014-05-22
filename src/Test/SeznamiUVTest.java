@@ -143,14 +143,14 @@ public class SeznamiUVTest {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("removefirst")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("removefirst")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("removefirst")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("removefirst")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("removefirst")); break;
 		}
 		assertEquals("Error: please specify a string", uv.processInput("add"));
 		switch (struct) {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("removefirst")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("removefirst")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("removefirst")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("removefirst")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("removefirst")); break;
 		}
 	}
 
@@ -159,14 +159,14 @@ public class SeznamiUVTest {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("getfirst")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("getfirst")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("getfirst")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("getfirst")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("getfirst")); break;
 		}
 		assertEquals("Error: please specify a string", uv.processInput("add"));
 		switch (struct) {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("getfirst")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("getfirst")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("getfirst")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("getfirst")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("getfirst")); break;
 		}
 	}
 	
@@ -175,14 +175,14 @@ public class SeznamiUVTest {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("exists test")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("exists test")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("exists test")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("exists test")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("exists test")); break;
 		}
 		assertEquals("Error: please specify a string", uv.processInput("add"));
 		switch (struct) {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("exists test")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("exists test")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("exists test")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("exists test")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("exists test")); break;
 		}
 	}
 	
@@ -191,14 +191,14 @@ public class SeznamiUVTest {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("remove test")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("remove test")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("remove test")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("remove test")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("remove test")); break;
 		}
 		assertEquals("Error: please specify a string", uv.processInput("add"));
 		switch (struct) {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("remove test")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("remove test")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("remove test")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("remove test")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("remove test")); break;
 		}
 	}
 	
@@ -247,7 +247,7 @@ public class SeznamiUVTest {
 			case "sk": assertEquals("Error: stack is empty", uv.processInput("removefirst")); break;
 			case "pv": assertEquals("Error: priority queue is empty", uv.processInput("removefirst")); break;
 			case "bst": assertEquals("Error: bst tree is empty", uv.processInput("removefirst")); break;
-			default: assertEquals("Error: bk queue is empty", uv.processInput("removefirst")); break;
+			default: assertEquals("Error: binomial queue is empty", uv.processInput("removefirst")); break;
 		}
 		assertEquals("0", uv.processInput("count"));
 	}
