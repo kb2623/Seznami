@@ -3,7 +3,9 @@ package Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+
 import Source.Stack;
+
 import Nodes.StackNode;
 
 public class StackTest {

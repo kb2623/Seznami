@@ -1,14 +1,17 @@
 package Source;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+
 import java.util.NoSuchElementException;
 import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.List;
+
+import UserInterface.Seznam;
 
 public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 
@@ -35,6 +38,17 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 		this(100, null);
 	}
 	
+	@Override
+	public void setComparator(Comparator<T> comparator) {
+		List<T> list = this.asList();
+		this.heap = new Object[list.size()];
+		this.end = 0;
+		this.cmp = comparator;
+		for(T t : list) {
+			this.add(t);
+		}
+	}
+	
 	private int compare(T o1, T o2) {
 		if(this.cmp == null) {
 			return o1.compareTo(o2);
@@ -46,16 +60,12 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 	@Override
 	public void add(T e) {
 		if(this.heap.length <= this.end) {
-			this.resize();
+			Object newHeap[] = new Object[this.heap.length * PrioritetnaVrsta.ADD_SIZE];
+			System.arraycopy(this.heap, 0, newHeap, 0, this.heap.length);
+			this.heap = newHeap;
 		}
 		this.heap[this.end++] = e;
 		this.bubbleUp();
-	}
-
-	private void resize() {
-		Object newHeap[] = new Object[this.heap.length * PrioritetnaVrsta.ADD_SIZE];
-		System.arraycopy(this.heap, 0, newHeap, 0, this.heap.length);
-		this.heap = newHeap;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -206,18 +216,20 @@ public class PrioritetnaVrsta<T extends Comparable<T>> implements Seznam<T> {
 	}
 
 	@Override
-	public void print() {
-		this.print(0, 0);
+	public String print() {
+		StringBuilder builder = new StringBuilder();
+		this.print(0, 0, builder);
+		return builder.toString();
 	}
 	
-	private void print(int ele, int numTabs) {
+	private void print(int ele, int numTabs, StringBuilder builder) {
 		if(ele < this.size()) {
-			this.print(ele*2+1, numTabs+1);
+			this.print(ele*2+1, numTabs+1, builder);
 			for(int i = 0; i < numTabs; i++) {
-				System.out.print('\t');
+				builder.append('\t');
 			}
-			System.out.println(this.heap[ele]);
-			this.print(ele*2+2, numTabs+1);
+			builder.append(this.heap[ele]);
+			this.print(ele*2+2, numTabs+1, builder);
 		}
 	}
 

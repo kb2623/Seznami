@@ -1,25 +1,27 @@
 package Source;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.HashMap;
 
-public class SeznamiUV {
+import UserInterface.Seznam;
+import UserInterface.AbstractFacrory;
 
-	private final HashMap<String, Seznam<String>> seznami;
-	private Seznam<String> seznam;
+public class SeznamiUV<Element> {
 
-	public SeznamiUV() {
-		this.seznami = new HashMap<>();
-		this.seznami.put("pv", new PrioritetnaVrsta<>());
-		this.seznami.put("sk", new Sklad<>());
-		this.seznami.put("bst", new Bst<>());
-		this.seznami.put("bk", new BinomskaKopica<>());
-		this.seznam = null;
-	}
+	private AbstractFacrory<Element> facrory;
+	private HashMap<String, Seznam<Element>> seznami;
+	private Seznam<Element> seznam;
+	private String seznamKey;
+
+	public SeznamiUV(AbstractFacrory<Element> facrory) { 
+		this.seznami = new HashMap<>(); 
+		this.facrory = facrory;
+	}	
 	
 	public void addImplementations(String name, Seznam seznam) {
 		this.seznami.put(name, seznam);
@@ -29,194 +31,147 @@ public class SeznamiUV {
 		if(input == null) {
 			return "Error: Bad arguments";
 		}
-		Scanner scan = new Scanner(input);
-		if(!scan.hasNext()) {
-			scan.close();
-			return "Error: No arguments";
-		}
-		String res = "OK", token = scan.next();
-		switch(token) {
-			case "use":
-				if(null != (token = this.getNextString(scan))) {
-					if(null == (this.seznam = this.seznami.get(token))) {
-						res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-					}
-				} else {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
+		String token;
+		try (Scanner scan = new Scanner(input)) {
+			if(!scan.hasNext()) {
+				scan.close();
+				return "Error: No arguments";
+			}
+			token = scan.next();
+			if(this.seznam == null && !token.equals("use")) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("Error: please specify a data structure (use {");
+				for(String s : this.seznami.keySet()) {
+					sb.append(s).append('|');
 				}
-				break;
-			case "add":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else if(null != (token = this.getNextString(scan))) {
-					try {
-						this.seznam.add(token);
-					} catch(IllegalArgumentException e) {
-						res = "Error: element exists";
-					}
-				} else {
-					res = "Error: please specify a string";
-				}
-				break;
-			case "removefirst":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else if(!this.seznam.isEmpty()) {
-					res = String.valueOf(this.seznam.removeFirst());
-				} else if(this.seznam instanceof Sklad) {
-					res = "Error: stack is empty";
-				} else if(this.seznam instanceof PrioritetnaVrsta) {
-					res = "Error: priority queue is empty";
-				} else if(this.seznam instanceof Bst){
-					res = "Error: bst tree is empty";
-				} else if(this.seznam instanceof BinomskaKopica) {
-					res = "Error: binomial queue is empty";
-				} else {
-					res = "Error: bk queue is empty";
-				}
-				break;
-			case "getfirst":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else if(!this.seznam.isEmpty()) {
-					res = String.valueOf(this.seznam.getFirst());
-				} else if(this.seznam instanceof Sklad) {
-					res = "Error: stack is empty";
-				} else if(this.seznam instanceof PrioritetnaVrsta) {
-					res = "Error: priority queue is empty";
-				} else if(this.seznam instanceof Bst){
-					res = "Error: bst tree is empty";
-				}  else if(this.seznam instanceof BinomskaKopica) {
-					res = "Error: binomial queue is empty";
-				} else {
-					res = "Error: bk queue is empty";
-				}
-				break;
-			case "count":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else {
-					res = String.valueOf(this.seznam.size());
-				}
-				break;
-			case "depth":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else {
-					res = String.valueOf(this.seznam.depth());
-				}
-				break;
-			case "isempty":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else {
-					if(this.seznam.isEmpty()) {
-						res = "Yes";
+				sb.append("..})");
+				return sb.toString();
+			}
+			switch(token) {
+				case "use":
+					if(null != (token = this.getNextString(scan)) && null != (this.seznam = this.seznami.get(token))) {
+						this.seznamKey = token;
+						return "OK";
 					} else {
-						res = "Not";
-					}
-				}
-				break;
-			case "exists":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else if(null != (token = this.getNextString(scan))) {
-					if(!this.seznam.isEmpty()) {
-						if(this.seznam.exists(token)) {
-							res = "Yes";
-						} else {
-							res = "Not";
+						StringBuilder sb = new StringBuilder();
+						sb.append("Error: please specify a data structure (use {");
+						for(String s : this.seznami.keySet()) {
+							sb.append(s).append('|');
 						}
-					} else if(this.seznam instanceof Sklad) {
-						res = "Error: stack is empty";
-					} else if(this.seznam instanceof PrioritetnaVrsta) {
-						res = "Error: priority queue is empty";
-					} else if(this.seznam instanceof Bst){
-						res = "Error: bst tree is empty";
-					} else if(this.seznam instanceof BinomskaKopica) {
-						res = "Error: binomial queue is empty";
-					} else {
-						res = "Error: bk queue is empty";
+						sb.append("..})");
+						return sb.toString();
 					}
-				} else {
-					res = "Error: please specify a string";
-				}
-				break;
-			case "remove":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else if(null != (token = this.getNextString(scan))) {
-					if(!this.seznam.isEmpty()) {
+				case "add":
+					if(null != (token = this.getNextString(scan))) {
 						try {
-							res = String.valueOf(this.seznam.remove(token));
-						} catch(NoSuchElementException e) {
-							res = "Error: element does not exists";
+							this.seznam.add(this.facrory.makeElement(token));
+						} catch(IllegalArgumentException e) {
+							return "Error: element exists";
+						} catch(AbstractMethodError e) {
+							System.out.println(token);
+							e.printStackTrace();
+						} catch(Exception e) {
+							return "Error: "+e.getMessage();
 						}
-					} else if(this.seznam instanceof Sklad) {
-						res = "Error: stack is empty";
-					} else if(this.seznam instanceof PrioritetnaVrsta) {
-						res = "Error: priority queue is empty";
-					} else if(this.seznam instanceof Bst){
-						res = "Error: bst tree is empty";
-					} else if(this.seznam instanceof BinomskaKopica) {
-						res = "Error: binomial queue is empty";
+						return "OK";
 					} else {
-						res = "Error: bk queue is empty";
+						return "Error: please specify a string";
 					}
-				} else {
-					res = "Error: please specify a string";
-				}
-				break;
-			case "reset":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else {
+				case "removefirst":
+					if(!this.seznam.isEmpty()) {
+						return this.seznam.removeFirst().toString();
+					} else {
+						return "Error: "+this.seznamKey+" is empty";
+					}
+				case "getfirst":
+					if(!seznam.isEmpty()) {
+						return this.seznam.getFirst().toString();
+					} else {
+						return "Error: "+this.seznamKey+" is empty";
+					}
+				case "count":
+					return Integer.toString(this.seznam.size());
+				case "depth":
+					return Integer.toString(this.seznam.depth());
+				case "isempty":
+					if(this.seznam.isEmpty()) {
+						return "Yes";
+					} else {
+						return "Not";
+					}
+				case "exists":
+					if(null != (token = this.getNextString(scan))) {
+						if(!this.seznam.isEmpty()) {
+							if(this.seznam.exists(this.facrory.makeElement(token))) {
+								return "Yes";
+							} else {
+								return "Not";
+							}
+						} else {
+							return "Error: "+this.seznamKey+" is empty";
+						}
+					} else {
+						return "Error: please specify a string";
+					}
+				case "remove":
+					if(null != (token = this.getNextString(scan))) {
+						if(!this.seznam.isEmpty()) {
+							try {
+								return this.seznam.remove(this.facrory.makeElement(token)).toString();
+							} catch(NoSuchElementException e) {
+								return "Error: element does not exists";
+							} catch(Exception e) {
+								return e.getMessage();
+							}
+						} else {
+							return "Error: "+this.seznamKey+" is empty";
+						}
+					} else {
+						return "Error: please specify a string";
+					}
+				case "reset":
 					while(!this.seznam.isEmpty()) {
 						this.seznam.removeFirst();
 					}
-				}
-				break;
-			case "print":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else {
-					this.seznam.print();
-				}
-				break;
-			case "save":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else if(null != (token = this.getNextString(scan))) {
-					try {
-						this.seznam.save(new FileOutputStream(token));
-					} catch(IOException e) {
-						res = "Error: IO error "+e.getMessage();
+					return "OK";
+				case "print":
+					return this.seznam.print()+"\nOK";
+				case "save":
+					if(null != (token = this.getNextString(scan))) {
+						try {
+							this.seznam.save(new FileOutputStream(token));
+						} catch(IOException e) {
+							return "I/O Error "+e.getMessage();
+						}
+						return "OK";
+					} else {
+						return "Error: please specify a file name";
 					}
-				} else {
-					res = "Error: please specify a file name";
-				}
-				break;
-			case "restore":
-				if(this.seznam == null) {
-					res = "Error: please specify a data structure type (pv, sk, bst, bk)";
-				} else if(null != (token = this.getNextString(scan))) {
-					try {
-						this.seznam.restore(new FileInputStream(token));
-					} catch (IOException e) {
-						res = "Error: IO error "+e.getMessage();
-					} catch(ClassNotFoundException e) {
-						res = "Error: Unknown format";
+				case "restore":
+					if(null != (token = this.getNextString(scan))) {
+						try {
+							this.seznam.restore(new FileInputStream(token));
+						} catch (IOException e) {
+							return "Error: IO error "+e.getMessage();
+						} catch(ClassNotFoundException e) {
+							return "Error: Unknown format";
+						}
+						return "OK";
+					} else {
+						return "Error: please specify a file name";
 					}
-				} else {
-					res = "Error: please specify a file name";
-				}
-				break;
-			default:
-				res = "Error: bad operation";
-				break;
+				case "assess":
+					if(null != (token = this.getNextString(scan))) {
+						this.seznam.setComparator(this.facrory.makeComparator(token));
+						return "OK";
+					} else {
+						return "Error: need more args";
+					}
+				case "exit":
+					return "Have a nice day!!!";
+				default: return "Error: bad operation";
+			}
 		}
-		scan.close();
-		return res;
 	}
 
 	private String getNextString(Scanner scan) {

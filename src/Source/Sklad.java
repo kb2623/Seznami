@@ -1,15 +1,20 @@
 package Source;
 
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+
+import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.List;
+
 import Nodes.StackNode;
 
-public class Sklad<T> extends Stack<T> implements Seznam<T> {
+import UserInterface.Seznam;
+
+public class Sklad<Element extends Comparable<Element>> extends Stack<Element> implements Seznam<Element> {
 	
 	public Sklad() {
 		super();
@@ -20,9 +25,9 @@ public class Sklad<T> extends Stack<T> implements Seznam<T> {
 		return super.isEmpty();
 	}
 
-	public int searchObject(T ele) {
+	public int searchObject(Element ele) {
 		int i = 0;
-		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
+		for(StackNode<Element> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
 			if(ele.equals(tmp.data)) {
 				return i;
 			} else {
@@ -33,17 +38,17 @@ public class Sklad<T> extends Stack<T> implements Seznam<T> {
 	}
 
 	@Override
-	public void add(T e) {
+	public void add(Element e) {
 		super.push(e);
 	}
 
 	@Override
-	public T removeFirst() {
+	public Element removeFirst() {
 		return super.pop();
 	}
 
 	@Override
-	public T getFirst() {
+	public Element getFirst() {
 		return super.peek();
 	}
 
@@ -58,22 +63,22 @@ public class Sklad<T> extends Stack<T> implements Seznam<T> {
 	}
 
 	@Override
-	public boolean exists(T e) {
+	public boolean exists(Element e) {
 		return (this.searchObject(e) != -1);
 	}
 
 	@Override
-	public T remove(T e) {
+	public Element remove(Element e) {
 		if(this.isEmpty()) {
 			throw new java.util.NoSuchElementException();
 		} else if(super.getTopNode().data.equals(e)) {
 			return this.removeFirst();
 		} else {
-			for(StackNode<T> tmp = super.getTopNode(); tmp.prev != null; tmp = tmp.prev) {
+			for(StackNode<Element> tmp = super.getTopNode(); tmp.prev != null; tmp = tmp.prev) {
 				if(tmp.prev.data.equals(e)) {
-					T dataTmp = tmp.prev.data;
+					Element dataElementmp = tmp.prev.data;
 					tmp.prev = tmp.prev.prev;
-					return dataTmp;
+					return dataElementmp;
 				}
 			}
 			throw new java.util.NoSuchElementException();
@@ -81,29 +86,30 @@ public class Sklad<T> extends Stack<T> implements Seznam<T> {
 	}
 
 	@Override
-	public List<T> asList() {
+	public List<Element> asList() {
 		if(this.isEmpty()) {
 			return null;
 		}
-		List<T> newList = new ArrayList<>(this.size());
-		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
+		List<Element> newList = new ArrayList<>(this.size());
+		for(StackNode<Element> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
 			newList.add(tmp.data);
 		}
 		return newList;
 	}
 
 	@Override
-	public void print() {
+	public String print() {
 		if(this.isEmpty()) {
-			return;
+			return "";
 		}
-		for(StackNode<T> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
-			System.out.print(tmp.data);
+		StringBuilder builder = new StringBuilder();
+		for(StackNode<Element> tmp = super.getTopNode(); tmp != null; tmp = tmp.prev) {
+			builder.append(tmp.data);
 			if(tmp.prev != null) {
-				System.out.print('\t');
+				builder.append('\t');
 			}
 		}
-		System.out.println();
+		return builder.toString();
 	}
 
 	@Override
@@ -111,7 +117,7 @@ public class Sklad<T> extends Stack<T> implements Seznam<T> {
 		ObjectOutputStream out = new ObjectOutputStream(outputStream);
 		out.writeByte(0);
 		out.writeInt(this.size());
-		for(StackNode<T> node = super.getTopNode(); node != null; node = node.prev) {
+		for(StackNode<Element> node = super.getTopNode(); node != null; node = node.prev) {
 			out.writeObject(node.data);
 		}
 	}
@@ -121,9 +127,9 @@ public class Sklad<T> extends Stack<T> implements Seznam<T> {
 	public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
 		ObjectInputStream in = new ObjectInputStream(inputStream);
 		if(in.readByte() == 0) {
-			Stack<T> stack = new Stack<>();
+			Stack<Element> stack = new Stack<>();
 			for(int i = in.readInt(); i > 0; i--) {
-				stack.push((T) in.readObject());
+				stack.push((Element) in.readObject());
 			}
 			while(!stack.isEmpty()) {
 				this.add(stack.pop());
@@ -131,8 +137,13 @@ public class Sklad<T> extends Stack<T> implements Seznam<T> {
 		} else {
 			int count = in.readInt();
 			for (int i = 0; i < count; i++) {
-				this.add((T) in.readObject());
+				this.add((Element) in.readObject());
 			}
 		}
+	}
+
+	@Override
+	public void setComparator(Comparator<Element> comparator) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

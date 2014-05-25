@@ -1,30 +1,42 @@
 package Source;
 
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+
+import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Comparator;
 
 import Nodes.BstNode;
+
+import UserInterface.Seznam;
 
 public class Bst<T extends Comparable<T>> implements Seznam<T> {
 
 	private BstNode<T> rootNode;
 	private Comparator<T> cmp;
 	private T minNodeValue;
-	
-	public Bst() {
-		this.rootNode = null;
-		this.cmp = null;
-	}
 
 	public Bst(Comparator<T> comparator) {
 		this.rootNode = null;
 		this.cmp = comparator;
+	}
+	
+	public Bst() {
+		this(null);
+	}
+	
+	@Override
+	public void setComparator(Comparator<T> comparator) {
+		List<T> list = this.asList();
+		this.rootNode = null;
+		this.cmp = comparator;
+		for(T t : list) {
+			this.add(t);
+		}
 	}
 	
 	private int compare(T o1, T o2) {
@@ -190,18 +202,20 @@ public class Bst<T extends Comparable<T>> implements Seznam<T> {
 	}
 
 	@Override
-	public void print() {
-		this.print(this.rootNode, 0);
+	public String print() {
+		StringBuilder builder = new StringBuilder();
+		this.print(this.rootNode, 0, builder);
+		return builder.toString();
 	}
 	
-	private void print(BstNode<T> node, int numTabs) {
+	private void print(BstNode<T> node, int numTabs, StringBuilder builder) {
 		if(node != null) {
-			this.print(node.right, numTabs+1);
+			this.print(node.right, numTabs+1, builder);
 			for(int i = 0; i < numTabs; i++) {
-				System.out.print('\t');
+				builder.append('\t');
 			}
-			System.out.println(node.value);
-			this.print(node.left, numTabs+1);
+			builder.append(node.value);
+			this.print(node.left, numTabs+1, builder);
 		}
 	}
 

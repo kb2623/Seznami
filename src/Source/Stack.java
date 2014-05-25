@@ -3,32 +3,32 @@ package Source;
 import java.util.NoSuchElementException;
 import Nodes.StackNode;
 
-public class Stack<T> {
+public class Stack<Element> {
 
-	private StackNode<T> top;
+	private StackNode<Element> top;
 
 	public Stack() {
 		this.top = null;
 	}
 
-	public StackNode<T> getTopNode() {
+	public StackNode<Element> getTopNode() {
 		return this.top;
 	}
 
-	public void push(T e) {
+	public void push(Element e) {
 		this.top = new StackNode<>(e, this.top);
 	}
 
-	public T pop() {
+	public Element pop() {
 		if(this.isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		T ret = this.top.data;
+		Element ret = this.top.data;
 		this.top = this.top.prev;
 		return ret;
 	}
 
-	public T peek() {
+	public Element peek() {
 		if(this.isEmpty()) {
 			throw new NoSuchElementException();
 		}
@@ -41,7 +41,7 @@ public class Stack<T> {
 
 	public int count() {
 		int count = 0;
-		for(StackNode<T> tmp = this.top; tmp != null; tmp = tmp.prev) {
+		for(StackNode<Element> tmp = this.top; tmp != null; tmp = tmp.prev) {
 			count++;
 		}
 		return count;
