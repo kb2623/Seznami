@@ -17,19 +17,22 @@ Tukaj so združene vse domače naloge, ki smo jih imeli pri **Testiranju in kako
 * **Seznam.java** - Opis
 
 ##src/DataStruct
-* **BinomskaKopica.java**
-* **Bst.java**
-* **PrioritetnaVrsta.java**
-* **Sklad.java**
-* **Stack.java**
+* **BinomskaKopica.java** - Opis
+* **Bst.java** - Opis
+* **PrioritetnaVrsta.java** - Opis
+* **Sklad.java** - Opis
+* **Stack.java** - Opis
+
+##src/Source
+* **SeznamiUV.java** - Opis
 
 ##test
-* **BinomskaKopicaTest.java**
-* **BstTest.java**
-* **PrioritetnaVrstaTest.java**
-* **SeznamiUVTest.java**
-* **SkladTest.java**
-* **StackTest.java**
+* **BinomskaKopicaTest.java** - Opis
+* **BstTest.java** - Opis
+* **PrioritetnaVrstaTest.java** - Opis
+* **SeznamiUVTest.java** - Opis
+* **SkladTest.java** - Opis
+* **StackTest.java** - Opis
 
 ##Prevajanje
 javac -d bin src/Nodes/*.java src/Source/*.java src/PodatkovnaBaza.java src/Comparators/*.java
