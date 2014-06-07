@@ -16,6 +16,20 @@ import UserInterface.Seznam;
 
 public class Bst<T extends Comparable<T>> implements Seznam<T> {
 
+	public class BstNode<T> {
+		public T value;
+		public BstNode<T> left;
+		public BstNode<T> right;
+		public BstNode(T e) {
+			this(e, null, null);
+		}
+		public BstNode(T e, BstNode<T> left, BstNode<T> right) {
+			this.value = e;
+			this.left = left;
+			this.right = right;
+		}
+	}
+
 	private BstNode<T> rootNode;
 	private Comparator<T> cmp;
 	private T minNodeValue;
