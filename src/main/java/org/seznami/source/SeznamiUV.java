@@ -1,4 +1,4 @@
-package Source;
+package org.seznami.source;
 
 import java.io.FileOutputStream;
 import java.io.FileInputStream;

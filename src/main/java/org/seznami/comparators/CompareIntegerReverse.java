@@ -1,4 +1,4 @@
-package Comparators;
+package org.seznami.comparators;
 
 import java.util.Comparator;
 

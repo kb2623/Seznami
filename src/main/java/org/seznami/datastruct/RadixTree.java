@@ -1,4 +1,4 @@
-package org.datastruct;
+package org.seznami.datastruct;
 
 import org.datastruct.exception.DuplicateKeyException;
 

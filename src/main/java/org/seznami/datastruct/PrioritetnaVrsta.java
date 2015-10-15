@@ -1,4 +1,4 @@
-package Source;
+package org.seznami.datastruct;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

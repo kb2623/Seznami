@@ -1,3 +1,5 @@
+package org.seznami;
+
 import Source.*;
 import UserInterface.AbstractFacrory;
 

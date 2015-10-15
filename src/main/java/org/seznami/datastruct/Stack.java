@@ -1,4 +1,4 @@
-package Source;
+package org.seznami.datastruct;
 
 import java.util.NoSuchElementException;
 import Nodes.StackNode;

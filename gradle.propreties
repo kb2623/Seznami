@@ -1,6 +1,0 @@
-buildVersion = 1.0.0
-sourceComp = 1.8
-
-projectName = 'Seznami'
-projectGroup = ''
-projectMainClass = 'PodatkovnaBaza'

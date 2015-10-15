@@ -1,4 +1,4 @@
-package UserInterface;
+package org.seznami.userinterface;
 
 import java.io.OutputStream;
 import java.io.IOException;

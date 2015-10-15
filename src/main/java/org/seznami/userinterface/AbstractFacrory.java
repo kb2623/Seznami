@@ -1,4 +1,4 @@
-package UserInterface;
+package org.seznami.userinterface;
 
 import java.util.Comparator;
 

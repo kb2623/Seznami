@@ -1,4 +1,4 @@
-package org.datastruct;
+package org.seznami.datastruct;
 
 import java.util.List;
 import java.util.LinkedList;
