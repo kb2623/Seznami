@@ -17,5 +17,5 @@ hs_err_pid*
 /bin/
 
 # Ignore gdadle folder
-.gradle
+.gradle/
 build/
